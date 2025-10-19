@@ -17,9 +17,9 @@ function Login() {
       const user = getUser()
       alert("Login successful!");
       if(user?.role === "admin"){
-        console.log("Admin")
+        navigate("/admin");
       }else if(user?.role === "lawyer"){
-        console.log("Lawyer")
+        navigate("/lawyer");
       }else{
         navigate("/"); // ✅ Redirect to home after successful login
       }

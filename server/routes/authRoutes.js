@@ -24,7 +24,7 @@ router.post('/register', async (req, res) =>{
             return res.status(400).json({message: 'Password must be at least 6 characters long.'})
         }
 
-        const profileImg = `https://api.dicebear.com/9.x/adventurer/svg?seed=${email}`
+        const profileImg = `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${email}`
 
         const newUser = new User({
             name,

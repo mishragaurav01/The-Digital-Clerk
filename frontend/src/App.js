@@ -1,90 +1,91 @@
-
-
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-// import Home from "./pages/Home";
-// import EstampForm from "./pages/EstampForm";
-// // import Login from "./pages/login";
-// // import SignUp from "./pages/signUp";
-// import LawyerPanel from "./pages/lawyerPanel";
-// import ProtectedRoute from "./routes/protectedRoute";
-// import EstampDetails from "./pages/estampDetails";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./Pages/Customer/LandingPage";
 import MyOrder from "./Pages/Customer/MyOrder";
 import Form from "./Pages/Customer/Form";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
-
+import Dashboard from "./Pages/Admin/Dashboard";
+import Request from "./Pages/Admin/Request";
+import Review from "./Pages/Admin/Review";
+import LawyerPanel from "./Pages/Lawyer/LawyerPanel";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function AppRouter() {
-  const navigate = useNavigate();
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const user = JSON.parse(localStorage.getItem("user"));
-  //   if (!token || !user) {
-  //     navigate("/login");
-  //   } else if (user.role === "lawyer") {
-  //     navigate("/lawyer");
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }, []);
   return (
     <Routes>
-
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/orders" element={<MyOrder />} />
-      <Route path="/eStamp" element={<Form />} />
+      {/* 🔓 Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<SignUp />} />
 
-      {" "}
-      {/* Public Routes /} <Route path="/login" element={<Login />} /> <Route path="/register" element={<SignUp />} /> {/ Protected Routes */}{" "}
-      {/* <Route
+      {/* 🧍 Customer Routes */}
+      <Route
         path="/"
         element={
           <ProtectedRoute allowedRoles={["customer"]}>
-            {" "}
-            <LandingPage />{" "}
+            <LandingPage />
           </ProtectedRoute>
         }
-      />{" "}
+      />
       <Route
-        path="/form"
+        path="/orders"
         element={
           <ProtectedRoute allowedRoles={["customer"]}>
-            {" "}
-            <EstampForm />{" "}
+            <MyOrder />
           </ProtectedRoute>
         }
-      />{" "}
+      />
+      <Route
+        path="/eStamp"
+        element={
+          <ProtectedRoute allowedRoles={["customer"]}>
+            <Form />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 🧑‍⚖️ Lawyer Routes */}
       <Route
         path="/lawyer"
         element={
           <ProtectedRoute allowedRoles={["lawyer"]}>
-            {" "}
-            <LawyerPanel />{" "}
+            <LawyerPanel />
           </ProtectedRoute>
         }
-      />{" "}
+      />
+
+      {/* 🧑‍💼 Admin Routes */}
       <Route
-        path="/estamp/:id"
+        path="/admin"
         element={
-          <ProtectedRoute allowedRoles={["lawyer"]}>
-            {" "}
-            <EstampDetails />{" "}
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <Dashboard />
           </ProtectedRoute>
-        } */}
-      {/* />{" "} */}
+        }
+      />
+      <Route
+        path="/customer-request"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <Request />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/lawyer-review"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <Review />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
+
 export default function App() {
   return (
     <BrowserRouter>
-      {" "}
-      <AppRouter />{" "}
+      <AppRouter />
     </BrowserRouter>
   );
 }

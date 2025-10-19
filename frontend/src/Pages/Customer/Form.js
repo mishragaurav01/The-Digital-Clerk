@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Step1BasicDetails from "../../Components/eStamp/Step1BasicDetails";
-import Step2DocumentUpload from "../../Components/eStamp/Step2DocumentUpload";
-import Step3PartyDetails from "../../Components/eStamp/Step3";
-import Step4PaymentDetails from "../../Components/eStamp/Step4";
-import Step5Review from "../../Components/eStamp/Step5";
+import Step1BasicDetails from "../../Components/Form/Step1BasicDetails";
+import Step2DocumentUpload from "../../Components/Form/Step2DocumentUpload";
+import Step3PartyDetails from "../../Components/Form/Step3";
+import Step4PaymentDetails from "../../Components/Form/Step4";
+import Step5Review from "../../Components/Form/Step5";
 
 const EstampForm = () => {
   const navigate = useNavigate();
@@ -42,10 +42,48 @@ const EstampForm = () => {
     if (currentStep > 1) setCurrentStep((prev) => prev - 1);
   };
 
-  const handleFormSubmit = () => {
-    console.log("Form submitted:", formData);
-    navigate("/payment-success");
+  const handleFormSubmit = async () => {
+    try {
+      const formPayload = new FormData();
+
+      // Add all form fields
+      formPayload.append("state", formData.state);
+      formPayload.append("doc_type", formData.documentType);
+      formPayload.append("purpose", formData.purpose);
+      formPayload.append("party1_name", formData.party1Name);
+      formPayload.append("party2_name", formData.party2Name);
+      formPayload.append("paying_party", formData.paymentBy);
+      formPayload.append("amount", formData.stampDutyAmount);
+
+      // Add uploaded files
+      if (formData.document) formPayload.append("uploaded_document", formData.document);
+      if (formData.idProof) formPayload.append("id_proof", formData.idProof);
+
+      // Send request
+      const token = localStorage.getItem("token"); // make sure your token is stored on login
+      const response = await fetch("http://localhost:5000/api/estamp/create", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formPayload,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Request Submitted Successfully!");
+        // Optional: navigate to another page
+        navigate("/");
+      } else {
+        alert(data.message || "Something went wrong!");
+      }
+    } catch (error) {
+      console.error("Error submitting request:", error);
+      alert("Error submitting request. Please try again.");
+    }
   };
+
 
   return (
     <div style={{ minHeight: "100vh", padding: "2rem", backgroundColor: "#f9f9f9" }}>

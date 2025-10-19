@@ -16,11 +16,17 @@ function LandingPage() {
       <main>
         <Hero />
         <ProblemSection />
-        <SolutionSection />
-        <BenefitsSection />
+        <section id="solution">
+          <SolutionSection />
+        </section>
+        <section id="benefits">
+          <BenefitsSection />
+        </section>
         <TestimonialsSection />
         <CTASection />
-        {/* <FAQSection /> */}
+        {/* <section id="faq">
+          <FAQSection />
+        </section> */}
       </main>
       <Footer />
     </div>
