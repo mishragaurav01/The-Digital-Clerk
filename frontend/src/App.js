@@ -8,7 +8,7 @@ import Dashboard from "./Pages/Admin/Dashboard";
 import Request from "./Pages/Admin/Request";
 import Review from "./Pages/Admin/Review";
 import LawyerPanel from "./Pages/Lawyer/LawyerPanel";
-import ProtectedRoute from "./routes/ProtectedRoute";
+// import ProtectedRoute from "./routes/ProtectedRoute";
 
 function AppRouter() {
   return (
