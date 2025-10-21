@@ -1,7 +1,7 @@
 import { FileText, Menu, X, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUser, logout } from "../../utils/auth";
+import { getUser, logout } from "../utils/auth";
 import { Link as ScrollLink } from "react-scroll";
 
 const Header = () => {
@@ -12,8 +12,8 @@ const Header = () => {
   const navigation = [
     { name: "How It Works", href: "solution", type: "scroll" },
     { name: "Benefits", href: "benefits", type: "scroll" },
-    { name: "FAQ", href: "faq", type: "scroll" },
     { name: "My Orders", href: "/orders", type: "route" },
+    { name: "FAQ", href: "faq", type: "scroll" },
   ];
 
   return (

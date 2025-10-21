@@ -9,6 +9,9 @@ import Request from "./Pages/Admin/Request";
 import Review from "./Pages/Admin/Review";
 import LawyerPanel from "./Pages/Lawyer/LawyerPanel";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import LawyerLayout from './Components/lawyerLayout'
+import AdminLayout from './Components/adminLayout'
+// import CustomerHeader from './Components/customerLayout'
 
 function AppRouter() {
   return (
@@ -18,6 +21,7 @@ function AppRouter() {
       <Route path="/register" element={<SignUp />} />
 
       {/* 🧍 Customer Routes */}
+      
       <Route
         path="/"
         element={
@@ -43,7 +47,11 @@ function AppRouter() {
         }
       />
 
+
+
+{/* Header for Lawyer panel */}
       {/* 🧑‍⚖️ Lawyer Routes */}
+      <Route element={<LawyerLayout />}>
       <Route
         path="/lawyer"
         element={
@@ -52,8 +60,12 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
+      </Route>
+
+      {/* header for admin panel */}
 
       {/* 🧑‍💼 Admin Routes */}
+      <Route element={<AdminLayout />}>
       <Route
         path="/admin"
         element={
@@ -78,6 +90,7 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
+      </Route>
     </Routes>
   );
 }

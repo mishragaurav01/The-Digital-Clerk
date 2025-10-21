@@ -113,10 +113,11 @@ router.get("/requests", authMiddleware, async (req, res) => {
     const { role, _id: userId } = req.user;
 
     let pendingRequests = [];
-    let inReviewRequests = [];
-    let completedRequests = [];
     let unAssignedRequests = [];
     let assignedRequests = [];
+    let inReviewRequests = [];
+    
+    let completedRequests = [];
     let rejectedRequests = [];
 
     if (role === "customer") {

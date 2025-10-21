@@ -24,9 +24,9 @@ function LandingPage() {
         </section>
         <TestimonialsSection />
         <CTASection />
-        {/* <section id="faq">
+        <section id="faq">
           <FAQSection />
-        </section> */}
+        </section>
       </main>
       <Footer />
     </div>
