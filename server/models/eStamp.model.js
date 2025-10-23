@@ -199,7 +199,7 @@ const eStampRequestSchema = new mongoose.Schema({
     reviewed: { type: Boolean, default: false },
     status: {
       type: String,
-      enum: ['pending', 'approved', 'rejected'],
+      enum: ['pending', 'approved', 'rejected', 'completed'],
       default: 'pending'
     },
     remarks: { type: String, default: '' },

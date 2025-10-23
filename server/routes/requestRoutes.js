@@ -137,32 +137,32 @@ router.get("/requests", authMiddleware, async (req, res) => {
       }).sort({ created_at: -1 });
 
     } else if (role === "lawyer") {
-  const allAssigned = await EStampRequest.find({
-    lawyer_id: userId,
-  }).sort({ created_at: -1 });
+      const allAssigned = await EStampRequest.find({ lawyer_id: userId }).sort({ created_at: -1 });
 
-  pendingRequests = allAssigned.filter(
-    (r) => r.lawyer_upload_status?.status === "pending"
-  );
+      // ✅ Lawyer pending = has not uploaded yet
+      pendingRequests = allAssigned.filter(
+        (r) => r.lawyer_upload_status?.status === "pending"
+      );
 
-  inReviewRequests = allAssigned.filter(
-    (r) =>
-      r.lawyer_upload_status?.status === "approved" &&
-      (r.admin_review?.status === "pending" ||
-       r.admin_review?.status === "assigned")
-  );
+      // ✅ In-review = uploaded & waiting for admin review
+      inReviewRequests = allAssigned.filter(
+        (r) => r.admin_review?.status === "lawyer_uploaded_review"
+      );
 
-  completedRequests = allAssigned.filter(
-    (r) => r.final_status === "completed"
-  );
+      // ✅ Completed = both lawyer & admin completed
+      completedRequests = allAssigned.filter(
+        (r) =>
+          r.admin_review?.status === "completed" &&
+          r.lawyer_upload_status?.status === "completed"
+      );
 
-  rejectedRequests = allAssigned.filter(
-    (r) =>
-      r.lawyer_upload_status?.status === "rejected" ||
-      r.admin_review?.status === "rejected"
-  );
-}
-else if (role === "admin") {
+      rejectedRequests = allAssigned.filter(
+        (r) =>
+          r.lawyer_upload_status?.status === "rejected" ||
+          r.admin_review?.status === "rejected"
+      );
+    }
+    else if (role === "admin") {
       pendingRequests = await EStampRequest.find({
         "admin_review.status": "pending",
       }).sort({ created_at: -1 });
@@ -175,8 +175,12 @@ else if (role === "admin") {
         "admin_review.status": "assigned",
       }).sort({ created_at: -1 });
 
+      inReviewRequests = await EStampRequest.find({
+        "admin_review.status": "lawyer_uploaded_review",
+      }).sort({ created_at: -1 });
+
       completedRequests = await EStampRequest.find({
-        final_status: "completed",
+        "admin_review.status": "completed",
       }).sort({ created_at: -1 });
 
       rejectedRequests = await EStampRequest.find({
@@ -187,7 +191,7 @@ else if (role === "admin") {
     // ✅ Add unified status for each request
     pendingRequests = pendingRequests.map((r) => addStatusField(r, role));
     completedRequests = completedRequests.map((r) => addStatusField(r, role));
-    // inReviewRequests = inReviewRequests.map((r) => addStatusField(r, role));
+    inReviewRequests = inReviewRequests.map((r) => addStatusField(r, role));
     unAssignedRequests = unAssignedRequests.map((r) => addStatusField(r, role));
     assignedRequests = assignedRequests.map((r) => addStatusField(r, role));
     rejectedRequests = rejectedRequests.map((r) => addStatusField(r, role));
@@ -237,7 +241,7 @@ router.patch('/update-status/:id', authMiddleware, async (req, res) => {
     const updateFields = {};
 
     if (admin_review && admin_review.status) {
-      const validStatuses = ['pending', 'approved', 'assigned', 'rejected', 'sent_back'];
+      const validStatuses = ['pending', 'approved', 'assigned', 'completed', 'rejected', 'sent_back'];
       if (!validStatuses.includes(admin_review.status)) {
         return res.status(400).json({ message: 'Invalid admin_review.status value' });
       }
@@ -249,6 +253,12 @@ router.patch('/update-status/:id', authMiddleware, async (req, res) => {
 
       if (lawyer_id) updateFields['lawyer_id'] = lawyer_id;
       if (admin_review.remarks) updateFields['admin_review.remarks'] = admin_review.remarks;
+    }
+
+    if(admin_review && admin_review.status === 'completed'){
+      updateFields['admin_review.status'] = admin_review.status;
+      updateFields['lawyer_upload_status.status'] = 'completed';
+      updateFields['final_status'] = 'completed';
     }
 
     if (lawyer_upload_status && lawyer_upload_status.status) {
@@ -325,9 +335,11 @@ router.post("/upload/:id", authMiddleware, lawyerUpload, async (req, res) => {
       {
         $set: {
           uploaded_file,
-          status: "completed",
           lawyer_id,
-          completed_at: new Date(),
+          "admin_review.status": "lawyer_uploaded_review", // ✅ Notify admin
+          "lawyer_upload_status.status": "approved", // ✅ Lawyer reviewed
+          "lawyer_upload_status.reviewed": true,
+          "lawyer_upload_status.reviewed_at": new Date(),
         },
       },
       { new: true }
@@ -337,12 +349,16 @@ router.post("/upload/:id", authMiddleware, lawyerUpload, async (req, res) => {
       return res.status(404).json({ message: "Request not found" });
     }
 
-    return res.status(200).json({ message: "File uploaded and request marked as completed", data: updated });
+    res.status(200).json({
+      message: "File uploaded successfully and request sent for admin review",
+      data: updated,
+    });
   } catch (error) {
     console.error("Error uploading file:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
 // ✅ Get Requests Created by the Logged-in Customer
 // router.get('/my-requests', authMiddleware, async (req, res) => {

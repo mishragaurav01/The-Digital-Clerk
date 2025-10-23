@@ -1,85 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { X, FileText, Calendar, CheckCircle } from "lucide-react";
-import { updateRequestStatus } from "../../utils/updateStatus";
+import React, { useState } from "react";
+import { X, FileText, Upload, Calendar, CheckCircle } from "lucide-react";
 
-const RequestDetailsModal = ({
-  isOpen,
-  onClose,
-  request,
-  setRequests,
-  refreshRequests,
-}) => {
-  const [lawyers, setLawyers] = useState([]);
-  const [selectedLawyer, setSelectedLawyer] = useState("");
-  const [loadingLawyers, setLoadingLawyers] = useState(false);
-  const [error, setError] = useState("");
+const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
-  // ✅ Hook should always be before early return
-  useEffect(() => {
-    const fetchLawyers = async () => {
-      try {
-        setLoadingLawyers(true);
-        setError("");
-        const token = localStorage.getItem("token");
-
-        const res = await fetch("http://localhost:5000/api/users/lawyer", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message || "Failed to fetch lawyers");
-        }
-
-        // ✅ Backend might return data.data or data.lawyers — be flexible
-        const lawyerList = data.data || data.lawyers || [];
-        setLawyers(lawyerList);
-      } catch (err) {
-        console.error("Error fetching lawyers:", err);
-        setError("Unable to load lawyers. Please try again later.");
-      } finally {
-        setLoadingLawyers(false);
-      }
-    };
-
-    if (request?.admin_review?.status === "approved") {
-      fetchLawyers();
-    }
-  }, [request?.admin_review?.status]);
-
-  // ✅ Safe early return after hooks
   if (!isOpen || !request) return null;
 
-  const formatDate = (date) =>
-    date ? new Date(date).toLocaleDateString("en-IN") : "—";
+  const handleFileUpload = async () => {
+    if (!file) return alert("Please select a file first");
+    setUploading(true);
 
-  // ✅ Reusable handler for all status updates
-  const handleStatusChange = async (newStatus) => {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("file", file);
+
     try {
-      const token = localStorage.getItem("token");
+      const res = await fetch(`http://localhost:5000/api/estamp/upload/${request._id}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
-      // ✅ Include lawyer_id only when assigning
-      const extraFields =
-        newStatus === "assigned" && selectedLawyer
-          ? { lawyer_id: selectedLawyer }
-          : {};
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Upload failed");
 
-      const data = await updateRequestStatus(
-        request._id,
-        newStatus,
-        token,
-        extraFields
-      );
-
-      console.log("✅ Updated successfully:", data);
-      alert(`Request ${newStatus} successfully!`);
-
-      if (refreshRequests) await refreshRequests();
+      alert("✅ File uploaded successfully!");
+      await refreshRequests();
       onClose();
-    } catch (error) {
-      console.error("⚠️ Status update failed:", error);
-      alert(error.message || "Something went wrong while updating the request");
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert(err.message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -132,16 +85,16 @@ const RequestDetailsModal = ({
           </div>
 
           <div className="border-t border-gray-200 pt-3 mt-3 space-y-1">
-            <p className="flex items-center gap-2">
+            {/* <p className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-blue-600" />
               Created On: {formatDate(request.created_at)}
-            </p>
-            {request.completed_at && (
+            </p> */}
+            {/* {request.completed_at && (
               <p className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
                 Completed On: {formatDate(request.completed_at)}
               </p>
-            )}
+            )} */}
           </div>
 
           {/* Uploaded Documents */}
@@ -151,7 +104,7 @@ const RequestDetailsModal = ({
             {[
               ["Uploaded Document", request.uploaded_document],
               ["ID Proof", request.id_proof],
-              ["Final Stamped File", request.uploaded_file],
+            //   ["Final Stamped File", request.uploaded_file],
             ].map(([label, file], idx) => (
               <div key={idx}>
                 <p className="text-sm font-medium text-gray-500 mb-1">
@@ -173,11 +126,45 @@ const RequestDetailsModal = ({
                 )}
               </div>
             ))}
+
+                    {request.uploaded_file ? (
+          <p className="text-green-600 font-medium mb-2">
+            Already uploaded:{" "}
+            <a
+              href={`http://localhost:5000/uploads/${request.uploaded_file}`}
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              View File
+            </a>
+          </p>
+        ) : (
+          <>
+            <input
+              type="file"
+              onChange={(e) => setFile(e.target.files[0])}
+              className="border p-2 rounded w-full mb-3"
+            />
+            <button
+              onClick={handleFileUpload}
+              disabled={uploading}
+              className={`w-full py-2 rounded-md text-white ${
+                uploading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              <Upload className="inline-block mr-2 w-4 h-4" />
+              {uploading ? "Uploading..." : "Upload & Submit for Review"}
+            </button>
+          </>
+        )}
           </div>
         </div>
 
+        
+
         {/* ✅ Lawyer Assignment Dropdown */}
-        {request.admin_review.status === "approved" && (
+        {/* {request.admin_review.status === "approved" && (
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Assign Lawyer
@@ -204,20 +191,20 @@ const RequestDetailsModal = ({
               <p className="text-gray-500 text-sm">No lawyers available.</p>
             )}
           </div>
-        )}
+        )} */}
 
         {/* Footer Buttons */}
         <div className="mt-6 text-right space-x-3">
-          {request.admin_review.status === "pending" && (
+          {/* {request.admin_review.status === "pending" && (
             <button
               onClick={() => handleStatusChange("approved")}
               className="px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
             >
               Approve
             </button>
-          )}
+          )} */}
 
-          {request.admin_review.status === "approved" && (
+          {/* {request.admin_review.status === "approved" && (
             <button
               disabled={!selectedLawyer}
               onClick={() => handleStatusChange("assigned")}
@@ -229,16 +216,18 @@ const RequestDetailsModal = ({
             >
               Assign to Lawyer
             </button>
-          )}
+          )} */}
 
-          {request.admin_review.status === "lawyer_uploaded_review" && (
+          {/* {request.admin_review.status === "lawyer_uploaded_review" && (
             <button
               onClick={() => handleStatusChange("completed")}
               className="px-4 py-2 text-sm font-medium rounded-md bg-green-600 text-white hover:bg-green-700 transition"
             >
               Complete
             </button>
-          )}
+          )} */}
+
+          
 
           <button
             onClick={onClose}
@@ -252,4 +241,8 @@ const RequestDetailsModal = ({
   );
 };
 
-export default RequestDetailsModal;
+export default LawyerRequestModal;
+
+
+
+

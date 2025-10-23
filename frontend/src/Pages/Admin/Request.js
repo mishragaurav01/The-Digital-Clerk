@@ -53,14 +53,14 @@ const EstampRequests = () => {
     fetchRequests();
   }, [fetchRequests]);
 
-  const tabs = [
-    { key: "pending", label: "Pending Requests" },
-    { key: "unAssigned", label: "Unassigned Requests" },
-    { key: "assigned", label: "Assigned Requests" },
-    { key: "inReview", label: "In-Review Requests" },
-    { key: "completed", label: "Completed Requests" },
-    { key: "rejected", label: "Rejected Requests" },
-  ];
+const tabs = [
+  { key: "pending", label: "Pending Requests" },
+  { key: "unAssigned", label: "Unassigned Requests" },
+  { key: "assigned", label: "Assigned Requests" },
+  { key: "inReview", label: "In-Review Requests" }, // ✅ changed key
+  { key: "completed", label: "Completed Requests" },
+  { key: "rejected", label: "Rejected Requests" },
+];
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-10">
