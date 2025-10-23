@@ -1,4 +1,4 @@
-import Header from "./LandingPage/Header";
+import Header from "./lawyerHeader";
 import { Outlet, useLocation } from "react-router-dom";
 
 const LawyerLayout = () => {

@@ -230,6 +230,10 @@ router.patch('/update-status/:id', authMiddleware, async (req, res) => {
     const { id } = req.params;
     const { admin_review, lawyer_id, final_status, lawyer_upload_status } = req.body;
 
+    console.log("🟢 Incoming update request:");
+    console.log("ID:", id);
+    console.log("Body:", req.body);
+
     const updateFields = {};
 
     if (admin_review && admin_review.status) {
@@ -237,29 +241,28 @@ router.patch('/update-status/:id', authMiddleware, async (req, res) => {
       if (!validStatuses.includes(admin_review.status)) {
         return res.status(400).json({ message: 'Invalid admin_review.status value' });
       }
-      // Flatten the nested updates
+
       updateFields['admin_review.status'] = admin_review.status;
       updateFields['admin_review.reviewed'] = true;
       updateFields['admin_review.reviewed_at'] = new Date();
+      updateFields['final_status'] = final_status;
 
-      updateFields['lawyer_id'] = lawyer_id
-      updateFields['final_status'] = final_status
-
-      if (admin_review.remarks) {
-        updateFields['admin_review.remarks'] = admin_review.remarks;
-      }
+      if (lawyer_id) updateFields['lawyer_id'] = lawyer_id;
+      if (admin_review.remarks) updateFields['admin_review.remarks'] = admin_review.remarks;
     }
 
-    if(lawyer_upload_status && lawyer_upload_status.status){
+    if (lawyer_upload_status && lawyer_upload_status.status) {
       const validLawyerStatuses = ['pending', 'approved', 'rejected'];
       if (!validLawyerStatuses.includes(lawyer_upload_status.status)) {
         return res.status(400).json({ message: 'Invalid lawyer_upload_status.status value' });
       }
 
-      updateFields['lawyer_upload_status.status'] = lawyer_upload_status.status
-      updateFields['lawyer_upload_status.reviewed'] = true
-      updateFields['lawyer_upload_status.reviewed_at'] = new Date()
+      updateFields['lawyer_upload_status.status'] = lawyer_upload_status.status;
+      updateFields['lawyer_upload_status.reviewed'] = true;
+      updateFields['lawyer_upload_status.reviewed_at'] = new Date();
     }
+
+    console.log("🟢 Update fields:", updateFields);
 
     const updated = await EStampRequest.findByIdAndUpdate(
       id,
@@ -273,11 +276,11 @@ router.patch('/update-status/:id', authMiddleware, async (req, res) => {
 
     res.status(200).json({
       message: 'Request updated successfully',
-      data: updated
+      data: updated,
     });
   } catch (error) {
-    console.error('Error updating request:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error('❌ Error updating request:', error);
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 

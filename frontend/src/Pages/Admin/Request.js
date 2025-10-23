@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import RequestCard from "../../Components/CustomerRequests/RequestCard";
 import RequestDetailsModal from "../../Components/CustomerRequests/RequestDetailsModal";
 
-const MyOrders = () => {
+const EstampRequests = () => {
   const [activeTab, setActiveTab] = useState("pending");
   const [requests, setRequests] = useState({
     pending: [],
@@ -15,40 +15,43 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/estamp/requests", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  // ✅ Wrap fetchRequests in useCallback so it can be reused
+  const fetchRequests = useCallback(async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/estamp/requests", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(data.message || "Failed to fetch requests");
-        }
-
-        setRequests({
-          pending: data.pendingRequests || [],
-          unAssigned: data.unAssignedRequests || [],
-          assigned: data.assignedRequests || [],
-          inReview: data.inReviewRequests || [],
-          completed: data.completedRequests || [],
-          rejected: data.rejectedRequests || [],
-        });
-      } catch (error) {
-        console.error("Error fetching requests:", error.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch requests");
       }
-    };
 
-    fetchRequests();
+      setRequests({
+        pending: data.pendingRequests || [],
+        unAssigned: data.unAssignedRequests || [],
+        assigned: data.assignedRequests || [],
+        inReview: data.inReviewRequests || [],
+        completed: data.completedRequests || [],
+        rejected: data.rejectedRequests || [],
+      });
+    } catch (error) {
+      console.error("Error fetching requests:", error.message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  // ✅ Fetch on mount
+  useEffect(() => {
+    fetchRequests();
+  }, [fetchRequests]);
 
   const tabs = [
     { key: "pending", label: "Pending Requests" },
@@ -109,10 +112,12 @@ const MyOrders = () => {
           isOpen={!!selectedRequest}
           onClose={() => setSelectedRequest(null)}
           request={selectedRequest}
+          setRequests={setRequests}       // ✅ optional for local UI updates
+          refreshRequests={fetchRequests} // ✅ pass refresh function
         />
       )}
     </div>
   );
 };
 
-export default MyOrders;
+export default EstampRequests;

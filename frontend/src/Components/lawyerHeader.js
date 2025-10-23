@@ -10,10 +10,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   const navigation = [
-    { name: "How It Works", href: "solution", type: "scroll" },
-    { name: "Benefits", href: "benefits", type: "scroll" },
-    { name: "My Orders", href: "/orders", type: "route" },
-    { name: "FAQ", href: "faq", type: "scroll" },
+    { name: "E-Stamp Requests", href: "/lawyer", type: "route" },
+    { name: "Completed Requests", href: "/lawyer", type: "route" },
+    // { name: "My Orders", href: "/orders", type: "route" },
+    // { name: "FAQ", href: "faq", type: "scroll" },
   ];
 
   return (
