@@ -58,10 +58,11 @@ const EstampForm = () => {
       // Add uploaded files
       if (formData.document) formPayload.append("uploaded_document", formData.document);
       if (formData.idProof) formPayload.append("id_proof", formData.idProof);
-
+// https://cndofftakencr.in/api_es/
+// http://localhost:5000/api/
       // Send request
       const token = localStorage.getItem("token"); // make sure your token is stored on login
-      const response = await fetch("http://localhost:5000/api/estamp/create", {
+      const response = await fetch("https://cndofftakencr.in/api_es/estamp/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -156,19 +157,20 @@ const EstampForm = () => {
           </button>
 
           {currentStep < totalSteps ? (
-            <button
-              onClick={handleNext}
-              style={{
-                padding: "0.5rem 1rem",
-                backgroundColor: "#2563eb",
-                color: "#fff",
-                borderRadius: "0.25rem",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Next &rarr;
-            </button>
+            <></>
+            // <button
+            //   onClick={handleNext}
+            //   style={{
+            //     padding: "0.5rem 1rem",
+            //     backgroundColor: "#2563eb",
+            //     color: "#fff",
+            //     borderRadius: "0.25rem",
+            //     border: "none",
+            //     cursor: "pointer",
+            //   }}
+            // >
+            //   Next &rarr;
+            // </button>
           ) : (
             <button
               onClick={handleFormSubmit}

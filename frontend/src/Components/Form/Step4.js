@@ -1,24 +1,30 @@
 import { useState } from "react";
-import { IndianRupee, User, Users, ArrowRight } from "lucide-react";
+import { IndianRupee, User, ArrowRight } from "lucide-react";
 
 export default function Step4PaymentDetails({ formData, setFormData, onNext }) {
   const [paymentBy, setPaymentBy] = useState(formData.paymentBy || "");
   const [stampDutyAmount, setStampDutyAmount] = useState(formData.stampDutyAmount || "");
   const [errors, setErrors] = useState({});
 
+  const recommendedAmounts = [10, 50, 100, 500];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let newErrors = {};
+
     if (!paymentBy) newErrors.paymentBy = "Please select who will pay";
-    if (!stampDutyAmount || Number(stampDutyAmount) <= 0)
-      newErrors.stampDutyAmount = "Amount must be greater than 0";
+
+    const amountNumber = Number(stampDutyAmount);
+    if (!stampDutyAmount || amountNumber < 10 || amountNumber > 500) {
+      newErrors.stampDutyAmount = "Amount must be between ₹10 and ₹500";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    setFormData({ ...formData, paymentBy, stampDutyAmount: Number(stampDutyAmount) });
+    setFormData({ ...formData, paymentBy, stampDutyAmount: amountNumber });
     onNext();
   };
 
@@ -49,11 +55,6 @@ export default function Step4PaymentDetails({ formData, setFormData, onNext }) {
             label: formData.party2Name || "Party 2",
             sub: "Second party pays",
             icon: <User className="w-4 h-4" />
-          }, {
-            id: "shared",
-            label: "Shared Payment",
-            sub: "Both parties split the cost",
-            icon: <Users className="w-4 h-4" />
           }].map(option => (
             <div
               key={option.id}
@@ -77,6 +78,22 @@ export default function Step4PaymentDetails({ formData, setFormData, onNext }) {
         {/* Stamp Duty Amount */}
         <div>
           <label className="block font-medium text-gray-700 mb-1">Stamp Duty Amount *</label>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {recommendedAmounts.map(amount => (
+              <button
+                key={amount}
+                type="button"
+                onClick={() => setStampDutyAmount(amount)}
+                className={`px-4 py-1 rounded-md border ${
+                  stampDutyAmount == amount
+                    ? "border-blue-500 bg-blue-100 text-blue-700"
+                    : "border-gray-300 hover:bg-gray-100"
+                } transition`}
+              >
+                ₹{amount}
+              </button>
+            ))}
+          </div>
           <div className="relative">
             <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
@@ -90,7 +107,7 @@ export default function Step4PaymentDetails({ formData, setFormData, onNext }) {
             />
           </div>
           <p className="text-sm text-gray-500">
-            Enter the stamp duty amount as per your state's rates
+            Enter the stamp duty amount (₹10 to ₹500)
           </p>
           {errors.stampDutyAmount && (
             <p className="text-red-500 text-sm">{errors.stampDutyAmount}</p>

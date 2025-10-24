@@ -32,7 +32,7 @@ const RequestCard = ({ request }) => {
         </div>
 
         <div
-          className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
+          className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
             statusColors[request.admin_review.status] || "bg-gray-100 text-gray-700"
           }`}
         >

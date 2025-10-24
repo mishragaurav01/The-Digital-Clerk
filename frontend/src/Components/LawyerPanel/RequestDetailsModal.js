@@ -14,9 +14,10 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
     const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("file", file);
-
+// https://cndofftakencr.in/api_es/
+// http://localhost:5000/api/
     try {
-      const res = await fetch(`http://localhost:5000/api/estamp/upload/${request._id}`, {
+      const res = await fetch(`https://cndofftakencr.in/api_es/estamp/upload/${request._id}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -128,17 +129,17 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
             ))}
 
                     {request.uploaded_file ? (
-          <p className="text-green-600 font-medium mb-2">
-            Already uploaded:{" "}
-            <a
-              href={`http://localhost:5000/uploads/${request.uploaded_file}`}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              View File
-            </a>
-          </p>
+                    <p className="text-green-600 font-medium mb-2">
+                      Already uploaded:{" "}
+                      <a
+                        href={`http://localhost:5000/uploads/${request.uploaded_file}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="underline"
+                      >
+                        View File
+                      </a>
+                    </p>
         ) : (
           <>
             <input

@@ -11,13 +11,14 @@ const MyOrders = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
-
+// https://cndofftakencr.in/api_es/
+// http://localhost:5000/api/
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "http://localhost:5000/api/estamp/requests",
+          "https://cndofftakencr.in/api_es/estamp/requests",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

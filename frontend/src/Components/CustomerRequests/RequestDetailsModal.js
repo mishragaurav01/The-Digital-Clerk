@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { X, FileText, Calendar, CheckCircle } from "lucide-react";
+import { X, FileText, Calendar, CheckCircle, ChevronDown } from "lucide-react";
 import { updateRequestStatus } from "../../utils/updateStatus";
 
 const RequestDetailsModal = ({
@@ -13,6 +13,8 @@ const RequestDetailsModal = ({
   const [selectedLawyer, setSelectedLawyer] = useState("");
   const [loadingLawyers, setLoadingLawyers] = useState(false);
   const [error, setError] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
   // ✅ Hook should always be before early return
   useEffect(() => {
@@ -21,8 +23,9 @@ const RequestDetailsModal = ({
         setLoadingLawyers(true);
         setError("");
         const token = localStorage.getItem("token");
-
-        const res = await fetch("http://localhost:5000/api/users/lawyer", {
+// https://cndofftakencr.in/api_es/
+// http://localhost:5000/api/
+        const res = await fetch("https://cndofftakencr.in/api_es/users/lawyer", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -84,8 +87,8 @@ const RequestDetailsModal = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-lg max-w-lg w-full mx-4 p-6 relative border border-gray-200 animate-fadeIn">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 overflow-auto p-4 ">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg border border-gray-200 animate-fadeIn max-h-[90vh] overflow-y-auto p-5">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -177,34 +180,71 @@ const RequestDetailsModal = ({
         </div>
 
         {/* ✅ Lawyer Assignment Dropdown */}
+        {/* ✅ Lawyer Assignment Dropdown */}
         {request.admin_review.status === "approved" && (
-          <div className="mt-4">
+          <div className="mt-4 relative">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Assign Lawyer
             </label>
 
-            {loadingLawyers ? (
-              <p className="text-gray-500 text-sm">Loading lawyers...</p>
-            ) : error ? (
-              <p className="text-red-500 text-sm">{error}</p>
-            ) : lawyers.length > 0 ? (
-              <select
-                value={selectedLawyer}
-                onChange={(e) => setSelectedLawyer(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-              >
-                <option value="">Select a lawyer</option>
-                {lawyers.map((lawyer) => (
-                  <option key={lawyer._id} value={lawyer._id}>
-                    {lawyer.name} ({lawyer.email})
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <p className="text-gray-500 text-sm">No lawyers available.</p>
-            )}
+            {/* Dropdown Button */}
+            <button
+              type="button"
+              onClick={() => setDropdownOpen((prev) => !prev)}
+              className="w-full flex justify-between items-center border border-gray-300 rounded-md px-3 py-2 text-sm bg-white hover:bg-gray-50"
+            >
+              {selectedLawyer
+                ? lawyers.find((l) => l._id === selectedLawyer)?.name
+                : "Select Lawyer"}
+              <ChevronDown className="w-4 h-4 text-gray-500" />
+            </button>
+
+            {/* Dropdown List */}
+{/* Dropdown List */}
+{dropdownOpen && (
+  <div
+    className="absolute z-50 top-full mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-[calc(100vh-200px)] overflow-auto"
+  >
+    {loadingLawyers ? (
+      <p className="p-3 text-gray-500 text-sm">Loading lawyers...</p>
+    ) : error ? (
+      <p className="p-3 text-red-500 text-sm">{error}</p>
+    ) : lawyers.length > 0 ? (
+      lawyers.map((lawyer) => (
+        <div
+          key={lawyer._id}
+          onClick={() => {
+            setSelectedLawyer(lawyer._id);
+            setDropdownOpen(false);
+          }}
+          className={`flex items-center gap-3 p-3 cursor-pointer transition
+            ${
+              selectedLawyer === lawyer._id
+                ? "bg-blue-50 border-l-4 border-blue-500"
+                : "hover:bg-gray-100"
+            }`}
+        >
+          <img
+            src={lawyer.profileImg || "/default-profile.png"}
+            alt={lawyer.name}
+            className="w-8 h-8 rounded-full object-cover"
+          />
+          <div>
+            <p className="font-medium text-gray-900 text-sm">{lawyer.name}</p>
+            <p className="text-xs text-gray-500">{lawyer.email}</p>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="p-3 text-gray-500 text-sm">No lawyers available.</p>
+    )}
+  </div>
+)}
+
           </div>
         )}
+
+
 
         {/* Footer Buttons */}
         <div className="mt-6 text-right space-x-3">

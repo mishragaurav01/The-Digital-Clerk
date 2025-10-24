@@ -7,12 +7,13 @@ import RequestTable from "../../Components/AdminDashboard/RequestTable";
 const AdminDashboard = () => {
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState("pending");
-
+// https://cndofftakencr.in/api_es/
+// http://localhost:5000/api/
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/estamp/requests", {
+        const res = await axios.get("https://cndofftakencr.in/api_es/estamp/requests", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setData(res.data);

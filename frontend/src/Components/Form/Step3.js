@@ -32,17 +32,19 @@ export default function Step3PartyDetails({ formData, setFormData, onNext }) {
     e.preventDefault();
 
     let newErrors = {};
-    if (!form.party1Name) newErrors.party1Name = "Party 1 name is required";
-    if (!form.party2Name) newErrors.party2Name = "Party 2 name is required";
+    if (!form.party1Name.trim()) newErrors.party1Name = "Party 1 name is required";
+    if (!form.party2Name.trim()) newErrors.party2Name = "Party 2 name is required";
+    if (!uploadedIdProof) newErrors.idProof = "ID proof is required";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return;
+      return; // stop moving to next step
     }
 
-    setFormData({ ...formData, ...form });
-    onNext();
+    setFormData({ ...formData, ...form, idProof: uploadedIdProof });
+    onNext(); // move to next step only if all fields are filled
   };
+
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6">
@@ -111,15 +113,20 @@ export default function Step3PartyDetails({ formData, setFormData, onNext }) {
                 type="file"
                 accept=".pdf,.jpg,.jpeg,.png"
                 onChange={handleIdProofUpload}
-                className="hidden"
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  errors.idProof ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              <button
+              {/* <button
                 type="button"
                 className="border border-gray-400 rounded-md px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
               >
-                Choose File
-              </button>
+                
+              </button> */}
               <p className="text-xs text-gray-500 mt-2">PDF, JPG, PNG (Max 5MB)</p>
+              {errors.idProof && (
+            <p className="text-red-500 text-sm mt-1">{errors.idProof}</p>
+          )}
             </div>
           ) : (
             <div className="border border-gray-300 rounded-lg p-3 flex items-center justify-between">

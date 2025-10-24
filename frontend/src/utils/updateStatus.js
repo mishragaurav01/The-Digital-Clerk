@@ -16,8 +16,8 @@ export const updateRequestStatus = async (id, status, token, extraFields = {}) =
     };
 
     console.log("📦 Sending payload:", payload);
-
-    const response = await fetch(`http://localhost:5000/api/estamp/update-status/${id}`, {
+// https://cndofftakencr.in/api_es/
+    const response = await fetch(`https://cndofftakencr.in/api_es/estamp/update-status/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

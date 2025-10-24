@@ -11,7 +11,7 @@ const Header = () => {
 
   const navigation = [
     { name: "E-Stamp Requests", href: "/lawyer", type: "route" },
-    { name: "Completed Requests", href: "/lawyer", type: "route" },
+    // { name: "Completed Requests", href: "/lawyer", type: "route" },
     // { name: "My Orders", href: "/orders", type: "route" },
     // { name: "FAQ", href: "faq", type: "scroll" },
   ];

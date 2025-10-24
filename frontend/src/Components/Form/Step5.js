@@ -7,8 +7,6 @@ export default function Step5Review({ formData, onSubmit }) {
         return formData.party1Name || "Party 1";
       case "party2":
         return formData.party2Name || "Party 2";
-      case "shared":
-        return "Both parties (shared)";
       default:
         return "Not specified";
     }
