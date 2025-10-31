@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { LayoutGrid, Table as TableIcon } from "lucide-react";
 import RequestCard from "../../Components/CustomerRequests/RequestCard";
+import RequestTable from "../../Components/AdminDashboard/RequestTable";
 import RequestDetailsModal from "../../Components/CustomerRequests/RequestDetailsModal";
 
 const EstampRequests = () => {
@@ -14,14 +16,14 @@ const EstampRequests = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
-// https://cndofftakencr.in/api_es/
-// http://localhost:5000/api/
-  // ✅ Wrap fetchRequests in useCallback so it can be reused
+  const [tableView, setTableView] = useState(false); // ✅ NEW toggle state
+
+  // ✅ Fetch requests
   const fetchRequests = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch("https://cndofftakencr.in/api_es/estamp/requests", {
+      const response = await fetch("http://localhost:5000/api/estamp/requests", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,23 +51,43 @@ const EstampRequests = () => {
     }
   }, []);
 
-  // ✅ Fetch on mount
   useEffect(() => {
     fetchRequests();
   }, [fetchRequests]);
 
-const tabs = [
-  { key: "pending", label: "Pending Requests" },
-  { key: "unAssigned", label: "Unassigned Requests" },
-  { key: "assigned", label: "Assigned Requests" },
-  { key: "inReview", label: "In-Review Requests" }, // ✅ changed key
-  { key: "completed", label: "Completed Requests" },
-  { key: "rejected", label: "Rejected Requests" },
-];
+  const tabs = [
+    { key: "pending", label: "Pending Requests" },
+    { key: "unAssigned", label: "Unassigned Requests" },
+    { key: "assigned", label: "Assigned Requests" },
+    { key: "inReview", label: "In-Review Requests" },
+    { key: "completed", label: "Completed Requests" },
+    { key: "rejected", label: "Rejected Requests" },
+  ];
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">eStamp Requests</h1>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <h1 className="text-3xl font-bold text-gray-800">eStamp Requests</h1>
+
+        {/* ✅ Toggle Button */}
+        <button
+          onClick={() => setTableView(!tableView)}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+        >
+          {tableView ? (
+            <>
+              <LayoutGrid className="w-4 h-4" />
+              Card View
+            </>
+          ) : (
+            <>
+              <TableIcon className="w-4 h-4" />
+              Table View
+            </>
+          )}
+        </button>
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-6 border-b border-gray-200 mb-8 overflow-x-auto">
@@ -84,10 +106,17 @@ const tabs = [
         ))}
       </div>
 
-      {/* Requests */}
+      {/* Requests View */}
       {loading ? (
         <p className="text-gray-500">Loading requests...</p>
+      ) : tableView ? (
+        // ✅ TABLE VIEW
+        <RequestTable
+          requests={requests[activeTab]}
+          onRowClick={(req) => setSelectedRequest(req)} // ✅ open modal when table row clicked
+        />
       ) : (
+        // ✅ CARD VIEW
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {requests[activeTab]?.length > 0 ? (
             requests[activeTab].map((req) => (
@@ -107,14 +136,14 @@ const tabs = [
         </div>
       )}
 
-      {/* Details Modal */}
+      {/* Request Details Modal */}
       {selectedRequest && (
         <RequestDetailsModal
           isOpen={!!selectedRequest}
           onClose={() => setSelectedRequest(null)}
           request={selectedRequest}
-          setRequests={setRequests}       // ✅ optional for local UI updates
-          refreshRequests={fetchRequests} // ✅ pass refresh function
+          setRequests={setRequests}
+          refreshRequests={fetchRequests}
         />
       )}
     </div>

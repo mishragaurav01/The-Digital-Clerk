@@ -15,19 +15,20 @@ export default function Step5Review({ formData, onSubmit }) {
   const totalAmount = (formData.stampDutyAmount || 0) + 99 + 199;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6">
+    <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
-      <div>
+      {/* <div>
         <h2 className="text-2xl font-semibold text-gray-900 mb-2">Review Your Details</h2>
         <p className="text-gray-600">
           Please review all the information before submitting your eStamp request.
         </p>
-      </div>
+      </div> */}
 
       {/* Review Cards */}
+      
       <div className="space-y-6">
         {/* Basic Details */}
-        <div className="border rounded-md p-4">
+        {/* <div className="border rounded-md p-4">
           <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
             <MapPin className="w-5 h-5 text-blue-600" />
             Basic Details
@@ -48,10 +49,10 @@ export default function Step5Review({ formData, onSubmit }) {
               <p className="font-medium">{formData.purpose}</p>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Document Upload */}
-        <div className="border rounded-md p-4">
+        {/* <div className="border rounded-md p-4">
           <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
             <FileText className="w-5 h-5 text-blue-600" />
             Documents
@@ -64,10 +65,10 @@ export default function Step5Review({ formData, onSubmit }) {
             <p className="text-sm text-gray-500">ID Proof</p>
             <p className="font-medium">{formData.idProof ? formData.idProof.name : "Not uploaded"}</p>
           </div>
-        </div>
+        </div> */}
 
         {/* Party Details */}
-        <div className="border rounded-md p-4">
+        {/* <div className="border rounded-md p-4">
           <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
             <Users className="w-5 h-5 text-blue-600" />
             Party Details
@@ -82,10 +83,10 @@ export default function Step5Review({ formData, onSubmit }) {
               <p className="font-medium">{formData.party2Name}</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Payment Details */}
-        <div className="border rounded-md p-4">
+        {/* <div className="border rounded-md p-4">
           <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
             <IndianRupee className="w-5 h-5 text-blue-600" />
             Payment Details
@@ -100,7 +101,7 @@ export default function Step5Review({ formData, onSubmit }) {
               <p className="font-medium">₹{formData.stampDutyAmount}</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Payment Summary */}

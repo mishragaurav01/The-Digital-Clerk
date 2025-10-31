@@ -1,17 +1,17 @@
 // src/services/authService.js
 // https://cndofftakencr.in/api_es/
 // http://localhost:5000/api/
-const API_URL = "https://cndofftakencr.in/api_es/auth"; // change as per your backend route
+const API_URL = "http://localhost:5000/api/auth"; // change as per your backend route
 
 // Register (Sign Up)
-export const signUp = async (name, email, password) => {
+export const signUp = async (name, email, password, phone) => {
   try {
     const res = await fetch(`${API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, phone }),
     });
 
     const data = await res.json();

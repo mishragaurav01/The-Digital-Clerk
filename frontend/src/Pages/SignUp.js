@@ -7,6 +7,7 @@ function SignUp() {
     name: "",
     email: "",
     password: "",
+    phone: "",
   });
   const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ function SignUp() {
     e.preventDefault();
 
     try {
-      await signUp(formData.name, formData.email, formData.password);
+      await signUp(formData.name, formData.email, formData.password, formData.phone);
       alert("Signup successful!");
       navigate("/"); // ✅ Redirect to login after successful signup
     } catch (error) {
@@ -97,6 +98,35 @@ function SignUp() {
                 marginBottom: "0.25rem",
               }}
             >
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              pattern="[0-9]{10}" // ✅ ensures exactly 10 digits
+              maxLength="10"
+              placeholder="Enter 10-digit phone number"
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                borderRadius: "8px",
+                border: "1px solid #d1d5db",
+                outline: "none",
+              }}
+            />
+          </div>
+
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontWeight: "600",
+                marginBottom: "0.25rem",
+              }}
+            >
               Email
             </label>
             <input
@@ -140,6 +170,7 @@ function SignUp() {
               }}
             />
           </div>
+
 
           <button
             type="submit"

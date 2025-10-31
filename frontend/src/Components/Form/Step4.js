@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IndianRupee, User, ArrowRight } from "lucide-react";
+import { IndianRupee, User, ArrowRight, MapPin, FileText, Users } from "lucide-react";
 
 export default function Step4PaymentDetails({ formData, setFormData, onNext }) {
   const [paymentBy, setPaymentBy] = useState(formData.paymentBy || "");
@@ -25,14 +25,101 @@ export default function Step4PaymentDetails({ formData, setFormData, onNext }) {
     }
 
     setFormData({ ...formData, paymentBy, stampDutyAmount: amountNumber });
+    // have to add address Asking here
     onNext();
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
+    <div className="max-w-xl mx-auto space-y-6">
+
+      <div>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Review Your Details</h2>
+        <p className="text-gray-600">
+          Please review all the information before selecting payment details for your eStamp request.
+        </p>
+      </div>
+
+            <div className="space-y-6">
+        {/* Basic Details */}
+        <div className="border rounded-md p-4">
+          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
+            <MapPin className="w-5 h-5 text-blue-600" />
+            Basic Details
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-gray-500">State</p>
+              <p className="font-medium">{formData.state}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Document Type</p>
+              <p className="font-medium">{formData.documentType}</p>
+            </div>
+          </div>
+          {formData.purpose && (
+            <div>
+              <p className="text-sm text-gray-500">Purpose</p>
+              <p className="font-medium">{formData.purpose}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Document Upload */}
+        <div className="border rounded-md p-4">
+          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
+            <FileText className="w-5 h-5 text-blue-600" />
+            Documents
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Legal Document</p>
+            <p className="font-medium">{formData.document ? formData.document.name : "Not uploaded"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">ID Proof</p>
+            <p className="font-medium">{formData.idProof ? formData.idProof.name : "Not uploaded"}</p>
+          </div>
+        </div>
+
+        {/* Party Details */}
+        <div className="border rounded-md p-4">
+          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
+            <Users className="w-5 h-5 text-blue-600" />
+            Party Details
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-gray-500">Party 1</p>
+              <p className="font-medium">{formData.party1Name}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Party 2</p>
+              <p className="font-medium">{formData.party2Name}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Payment Details */}
+        {/* <div className="border rounded-md p-4">
+          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
+            <IndianRupee className="w-5 h-5 text-blue-600" />
+            Payment Details
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-gray-500">Payment By</p>
+              <p className="font-medium">{getPaymentByText()}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Stamp Duty Amount</p>
+              <p className="font-medium">₹{formData.stampDutyAmount}</p>
+            </div>
+          </div>
+        </div> */}
+      </div>
+      
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Payment Details</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Select Payment Details</h2>
         <p className="text-gray-600">
           Choose who will pay for the stamp duty and enter the amount.
         </p>
@@ -127,7 +214,7 @@ export default function Step4PaymentDetails({ formData, setFormData, onNext }) {
           type="submit"
           className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md transition-all duration-300"
         >
-          Continue to Review <ArrowRight className="w-5 h-5" />
+          Continue to Checkout <ArrowRight className="w-5 h-5" />
         </button>
       </form>
     </div>

@@ -11,23 +11,31 @@ const generateToken = (userId) =>{
 router.post('/register', async (req, res) =>{
 
     try {
-        const {name, email, password } = req.body 
+        const {name, email, password, phone } = req.body 
 
-        if(!name || !email || !password){
+        if(!name || !email || !password || !phone){
             return res.status(400).json({message: 'Please provide all the details.'})
         }
 
-        const existing = await User.findOne({ email });
-        if (existing) return res.status(409).json({ error: "Email already in Exist" });
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) return res.status(409).json({ error: "Email already in Exist" });
 
         if(password.length < 6){
             return res.status(400).json({message: 'Password must be at least 6 characters long.'})
+        }
+
+        const existingPhone = await User.findOne({ phone });
+        if (existingPhone) return res.status(409).json({ error: "Phone Number already in Exist" });
+
+        if(phone.length < 10){
+            return res.status(400).json({message: 'Phone Number must be at least 10 Numbers long.'})
         }
 
         const profileImg = `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${email}`
 
         const newUser = new User({
             name,
+            phone,
             email,
             password,
             profileImg
@@ -42,6 +50,7 @@ router.post('/register', async (req, res) =>{
             newUser:{
                 id: newUser._id,
                 name: newUser.name,
+                phone: newUser.phone,
                 email: newUser.email,
                 role: newUser.role,
                 profileImg: newUser.profileImg

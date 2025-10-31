@@ -21,15 +21,15 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "lawyer", "admin"],
       default: "customer",
     },
-    // phone: {
-    //   type: String,
-    //   validate: {
-    //     validator: function (v) {
-    //       return /^[0-9]{10,15}$/.test(v); // Basic phone validation
-    //     },
-    //     message: (props) => `${props.value} is not a valid phone number!`,
-    //   },
-    // },
+    phone: {
+      type: String,
+      validate: {
+        validator: function (v) {
+          return /^[0-9]{10,15}$/.test(v); // Basic phone validation
+        },
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+    },
     // location: {
     //   type: String,
     //   trim: true,

@@ -41,7 +41,7 @@ const RequestCard = ({ request }) => {
         </div>
 
         {/* Details */}
-        <div className="text-sm text-muted-foreground space-y-1">
+        <div className="text-sm text-foreground space-y-1">
           <p>
             State:{" "}
             <span className="font-medium text-foreground">
@@ -53,6 +53,7 @@ const RequestCard = ({ request }) => {
             Created on:{" "}
             {new Date(request.created_at).toLocaleDateString()}
           </p>
+          <p className="font-medium text-foreground">Request No. {request.request_id}</p>
         </div>
       </div>
     </div>

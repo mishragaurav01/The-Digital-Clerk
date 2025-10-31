@@ -21,6 +21,12 @@ const EstampForm = () => {
     stampDutyAmount: 0,
   });
 
+  // const message = encodeURIComponent(
+  //   `Hello, I’m ${user.name}. I need help filling the e-stamp request form.`
+  // );
+  // const whatsappLink = `https://wa.me/917303935818?text=${message}`;
+
+
   const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
 
@@ -62,7 +68,7 @@ const EstampForm = () => {
 // http://localhost:5000/api/
       // Send request
       const token = localStorage.getItem("token"); // make sure your token is stored on login
-      const response = await fetch("https://cndofftakencr.in/api_es/estamp/create", {
+      const response = await fetch("http://localhost:5000/api/estamp/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -87,108 +93,86 @@ const EstampForm = () => {
 
 
   return (
-    <div style={{ minHeight: "100vh", padding: "2rem", backgroundColor: "#f9f9f9" }}>
-      <div style={{ maxWidth: "700px", margin: "0 auto" }}>
-        {/* Header */}
-        <div style={{ marginBottom: "1.5rem" }}>
-          <button
-            style={{ marginBottom: "1rem", color: "#2563eb", cursor: "pointer" }}
-            onClick={() => navigate("/")}
-          >
-            &larr; Back to Home
-          </button>
-
-          <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
-            Generate Your eStamp
-          </h1>
-          <p style={{ color: "#6b7280" }}>
-            Step {currentStep} of {totalSteps}: {steps[currentStep - 1].title}
-          </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div style={{ marginBottom: "2rem", height: "8px", backgroundColor: "#e5e7eb", borderRadius: "4px" }}>
-          <div
-            style={{
-              width: `${progress}%`,
-              height: "100%",
-              backgroundColor: "#2563eb",
-              borderRadius: "4px",
-              transition: "width 0.3s ease",
-            }}
-          />
-        </div>
-
-        {/* Step Content */}
-        <div
-          style={{
-            backgroundColor: "#fff",
-            borderRadius: "0.5rem",
-            border: "1px solid #e5e7eb",
-            padding: "2rem",
-            marginBottom: "2rem",
-          }}
+  <div className="min-h-screen p-8 bg-gray-50">
+    <div className="max-w-2xl mx-auto">
+      {/* Header */}
+      <div className="mb-6">
+        <button
+          onClick={() => navigate("/")}
+          className="mb-4 text-blue-600 hover:underline"
         >
-          <CurrentStepComponent
-            formData={formData}
-            setFormData={setFormData}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            isFirstStep={currentStep === 1}
-            isLastStep={currentStep === totalSteps}
-            onSubmit={handleFormSubmit}
-          />
-        </div>
+          &larr; Back to Home
+        </button>
 
-        {/* Navigation */}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h1 className="text-3xl font-bold mb-2">Generate Your eStamp</h1>
+        <p className="text-gray-500">
+          Step {currentStep} of {totalSteps}: {steps[currentStep - 1].title}
+        </p>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="mb-8 h-2 bg-gray-200 rounded-md">
+        <div
+          className="h-full bg-blue-600 rounded-md transition-all duration-300 ease-in-out"
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
+
+      {/* Step Content */}
+      <div className="bg-white rounded-lg border border-gray-200 p-8 mb-8 shadow-sm">
+        <CurrentStepComponent
+          formData={formData}
+          setFormData={setFormData}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          isFirstStep={currentStep === 1}
+          isLastStep={currentStep === totalSteps}
+          onSubmit={handleFormSubmit}
+        />
+      </div>
+
+      {/* Navigation */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={handlePrevious}
+          disabled={currentStep === 1}
+          className={`px-4 py-2 border border-gray-300 rounded-md ${
+            currentStep === 1
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-100"
+          }`}
+        >
+          &larr; Previous
+        </button>
+
+        {currentStep === totalSteps && (
           <button
-            onClick={handlePrevious}
-            disabled={currentStep === 1}
-            style={{
-              padding: "0.5rem 1rem",
-              border: "1px solid #d1d5db",
-              borderRadius: "0.25rem",
-              cursor: currentStep === 1 ? "not-allowed" : "pointer",
-              opacity: currentStep === 1 ? 0.5 : 1,
-            }}
+            onClick={handleFormSubmit}
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
           >
-            &larr; Previous
+            Submit & Pay &rarr;
           </button>
+        )}
+      </div>
 
-          {currentStep < totalSteps ? (
-            <></>
-            // <button
-            //   onClick={handleNext}
-            //   style={{
-            //     padding: "0.5rem 1rem",
-            //     backgroundColor: "#2563eb",
-            //     color: "#fff",
-            //     borderRadius: "0.25rem",
-            //     border: "none",
-            //     cursor: "pointer",
-            //   }}
-            // >
-            //   Next &rarr;
-            // </button>
-          ) : (
-            <button
-              onClick={handleFormSubmit}
-              style={{
-                padding: "0.5rem 1rem",
-                backgroundColor: "#16a34a",
-                color: "#fff",
-                borderRadius: "0.25rem",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Submit & Pay &rarr;
-            </button>
-          )}
-        </div>
+      {/* ✅ WhatsApp Support Button */}
+      <div className="text-center mt-8">
+        <a
+          href="https://wa.me/917303935818?text=Hello%20I%20need%20help%20filling%20the%20e-stamp%20form."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-full shadow-md transition-all duration-200"
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+            alt="WhatsApp"
+            className="w-5 h-5"
+          />
+          Chat with Support
+        </a>
       </div>
     </div>
+  </div>
   );
 };
 

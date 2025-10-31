@@ -19,7 +19,7 @@ const LawyerRequests = () => {
       const token = localStorage.getItem("token");
 // https://cndofftakencr.in/api_es/
 // http://localhost:5000/api/
-      const res = await fetch("https://cndofftakencr.in/api_es/estamp/requests", {
+      const res = await fetch("http://localhost:5000/api/estamp/requests", {
         headers: { Authorization: `Bearer ${token}` },
       });
 

@@ -21,6 +21,7 @@ const statusIcons = {
 
 const RequestCard = ({ request }) => {
   return (
+    
     <div className="flex flex-col justify-between p-5 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
@@ -53,6 +54,7 @@ const RequestCard = ({ request }) => {
           Created on:{" "}
           {new Date(request.created_at).toLocaleDateString("en-IN")}
         </p>
+        <p className="font-medium text-foreground">Request No. {request.request_id}</p>
       </div>
     </div>
   );

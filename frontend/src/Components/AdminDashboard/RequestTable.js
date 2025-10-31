@@ -1,7 +1,7 @@
 import React from "react";
 import { FileText } from "lucide-react";
 
-const RequestTable = ({ requests }) => {
+const RequestTable = ({ requests, onRowClick }) => {
   if (!requests || requests.length === 0) {
     return (
       <div className="text-center py-10 text-muted-foreground">
@@ -20,7 +20,7 @@ const RequestTable = ({ requests }) => {
             <th className="px-6 py-3">State</th>
             <th className="px-6 py-3">Amount</th>
             <th className="px-6 py-3">Status</th>
-            <th className="px-6 py-3 text-right">I'd Proof</th>
+            <th className="px-6 py-3 text-right">ID Proof</th>
             <th className="px-6 py-3 text-right">Uploaded Document</th>
           </tr>
         </thead>
@@ -28,7 +28,8 @@ const RequestTable = ({ requests }) => {
           {requests.map((req) => (
             <tr
               key={req._id}
-              className="border-t border-border hover:bg-muted/40 transition-all"
+              onClick={() => onRowClick && onRowClick(req)} // ✅ Open modal when row clicked
+              className="border-t border-border hover:bg-muted/40 transition-all cursor-pointer"
             >
               <td className="px-6 py-3 font-medium text-foreground">
                 {req.doc_type}
@@ -42,6 +43,7 @@ const RequestTable = ({ requests }) => {
                   href={`http://localhost:5000/uploads/${req.id_proof}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()} // ✅ prevent modal when clicking link
                   className="text-primary hover:underline flex items-center gap-1 justify-end"
                 >
                   <FileText className="w-4 h-4" />
@@ -53,6 +55,7 @@ const RequestTable = ({ requests }) => {
                   href={`http://localhost:5000/uploads/${req.uploaded_document}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()} // ✅ prevent modal when clicking link
                   className="text-primary hover:underline flex items-center gap-1 justify-end"
                 >
                   <FileText className="w-4 h-4" />

@@ -47,7 +47,7 @@ export default function Step3PartyDetails({ formData, setFormData, onNext }) {
 
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
+    <div className="max-w-xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <h2 className="text-2xl font-semibold text-gray-900 mb-2">

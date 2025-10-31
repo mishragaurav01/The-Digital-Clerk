@@ -13,7 +13,7 @@ const AdminDashboard = () => {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("https://cndofftakencr.in/api_es/estamp/requests", {
+        const res = await axios.get("http://localhost:5000/api/estamp/requests", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setData(res.data);

@@ -18,7 +18,7 @@ const MyOrders = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "https://cndofftakencr.in/api_es/estamp/requests",
+          "http://localhost:5000/api/estamp/requests",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
