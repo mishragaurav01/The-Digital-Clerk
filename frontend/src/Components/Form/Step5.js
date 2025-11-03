@@ -1,6 +1,6 @@
-import { Shield, MapPin, FileText, Users, IndianRupee } from "lucide-react";
+import { Shield, MapPin, FileText, Users, IndianRupee, Receipt } from "lucide-react";
 
-export default function Step5Review({ formData, onSubmit }) {
+export default function Step5Review({ formData, billingProfile, onSubmit }) {
   const getPaymentByText = () => {
     switch (formData.paymentBy) {
       case "party1":
@@ -15,134 +15,142 @@ export default function Step5Review({ formData, onSubmit }) {
   const totalAmount = (formData.stampDutyAmount || 0) + 99 + 199;
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      {/* Header */}
-      {/* <div>
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Review Your Details</h2>
-        <p className="text-gray-600">
-          Please review all the information before submitting your eStamp request.
+    <div className="max-w-3xl mx-auto space-y-8">
+      {/* ================= HEADER ================= */}
+      <div className="text-center">
+        <h2 className="text-3xl font-semibold text-gray-900 mb-2">Review & Confirm</h2>
+        <p className="text-gray-600 text-sm">
+          Please review all details before proceeding to payment.
         </p>
-      </div> */}
+      </div>
 
-      {/* Review Cards */}
-      
-      <div className="space-y-6">
-        {/* Basic Details */}
-        {/* <div className="border rounded-md p-4">
-          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
-            <MapPin className="w-5 h-5 text-blue-600" />
-            Basic Details
-          </div>
+      {/* ================= ORDER SUMMARY ================= */}
+      <div className="border rounded-xl p-5 bg-white shadow-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <Receipt className="w-5 h-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900">Order Summary</h3>
+        </div>
+
+        <div className="space-y-4 text-sm">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">State</p>
-              <p className="font-medium">{formData.state}</p>
+              <p className="text-gray-500">State</p>
+              <p className="font-medium text-gray-900">{formData.state}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Document Type</p>
-              <p className="font-medium">{formData.documentType}</p>
+              <p className="text-gray-500">Document Type</p>
+              <p className="font-medium text-gray-900">{formData.documentType}</p>
             </div>
           </div>
+
           {formData.purpose && (
             <div>
-              <p className="text-sm text-gray-500">Purpose</p>
-              <p className="font-medium">{formData.purpose}</p>
+              <p className="text-gray-500">Purpose</p>
+              <p className="font-medium text-gray-900">{formData.purpose}</p>
             </div>
           )}
-        </div> */}
 
-        {/* Document Upload */}
-        {/* <div className="border rounded-md p-4">
-          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
-            <FileText className="w-5 h-5 text-blue-600" />
-            Documents
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Legal Document</p>
-            <p className="font-medium">{formData.document ? formData.document.name : "Not uploaded"}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">ID Proof</p>
-            <p className="font-medium">{formData.idProof ? formData.idProof.name : "Not uploaded"}</p>
-          </div>
-        </div> */}
+          <hr className="my-3" />
 
-        {/* Party Details */}
-        {/* <div className="border rounded-md p-4">
-          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
-            <Users className="w-5 h-5 text-blue-600" />
-            Party Details
-          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Party 1</p>
-              <p className="font-medium">{formData.party1Name}</p>
+              <p className="text-gray-500">Party 1</p>
+              <p className="font-medium text-gray-900">{formData.party1Name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Party 2</p>
-              <p className="font-medium">{formData.party2Name}</p>
+              <p className="text-gray-500">Party 2</p>
+              <p className="font-medium text-gray-900">{formData.party2Name}</p>
             </div>
           </div>
-        </div> */}
 
-        {/* Payment Details */}
-        {/* <div className="border rounded-md p-4">
-          <div className="flex items-center gap-2 mb-3 text-lg font-semibold">
-            <IndianRupee className="w-5 h-5 text-blue-600" />
-            Payment Details
+          <div>
+            <p className="text-gray-500">Payment By</p>
+            <p className="font-medium text-gray-900">{getPaymentByText()}</p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-500">Payment By</p>
-              <p className="font-medium">{getPaymentByText()}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Stamp Duty Amount</p>
-              <p className="font-medium">₹{formData.stampDutyAmount}</p>
-            </div>
-          </div>
-        </div> */}
-      </div>
 
-      {/* Payment Summary */}
-      <div className="border rounded-md p-4 bg-gray-50 space-y-2">
-        <div className="flex justify-between">
-          <span>Stamp Duty Amount</span>
-          <span>₹{formData.stampDutyAmount}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Service Fee</span>
-          <span>₹99</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Lawyer Review Fee</span>
-          <span>₹199</span>
-        </div>
-        <hr className="border-gray-300" />
-        <div className="flex justify-between font-semibold text-lg">
-          <span>Total Amount</span>
-          <span>₹{totalAmount}</span>
+          <div>
+            <p className="text-gray-500">Stamp Value</p>
+            <p className="font-medium text-gray-900">{getPaymentByText()}</p>
+          </div>
         </div>
       </div>
 
-      {/* Security Notice */}
-      <div className="bg-green-50 border border-green-200 rounded-md p-4 flex items-start gap-3">
+      {/* ================= BILLING DETAILS ================= */}
+      <div className="border rounded-xl p-5 bg-white shadow-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <MapPin className="w-5 h-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900">Billing Details</h3>
+        </div>
+
+        {billingProfile ? (
+          <div className="space-y-2 text-sm">
+            <p className="font-medium text-gray-900">{billingProfile.name}</p>
+            <p className="text-gray-700">
+              {billingProfile.addressLine1}
+              {billingProfile.addressLine2 ? `, ${billingProfile.addressLine2}` : ""}
+            </p>
+            <p className="text-gray-700">
+              {billingProfile.city}, {billingProfile.state} {billingProfile.postalCode}
+            </p>
+            <p className="text-gray-700">{billingProfile.country}</p>
+            {billingProfile.gstin && (
+              <p className="text-gray-700">GSTIN: {billingProfile.gstin}</p>
+            )}
+            {billingProfile.pan && (
+              <p className="text-gray-700">PAN: {billingProfile.pan}</p>
+            )}
+          </div>
+        ) : (
+          <p className="text-gray-500 text-sm">No billing details found.</p>
+        )}
+      </div>
+
+      {/* ================= PAYMENT SUMMARY ================= */}
+      <div className="border rounded-xl p-5 bg-gray-50">
+        <div className="flex items-center gap-2 mb-3">
+          <IndianRupee className="w-5 h-5 text-green-600" />
+          <h3 className="text-lg font-semibold text-gray-900">Payment Summary</h3>
+        </div>
+
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-700">Stamp Duty Amount</span>
+            <span className="font-medium">₹{formData.stampDutyAmount}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-700">Service Fee</span>
+            <span className="font-medium">₹99</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-700">Lawyer Review Fee</span>
+            <span className="font-medium">₹199</span>
+          </div>
+          <hr className="border-gray-300" />
+          <div className="flex justify-between font-semibold text-lg text-gray-900">
+            <span>Total Amount</span>
+            <span>₹{totalAmount}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ================= SECURITY NOTICE ================= */}
+      <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-3">
         <Shield className="w-5 h-5 text-green-600 mt-0.5" />
         <div>
           <h3 className="font-medium text-green-900 mb-1">Your data is secure</h3>
-          <p className="text-sm text-green-700">
-            All your information is encrypted and will only be used for generating your eStamp. 
-            Our verified lawyers will review your request within 24 hours.
+          <p className="text-sm text-green-700 leading-relaxed">
+            All your information is encrypted and will only be used for generating your
+            eStamp. Our verified lawyers will review your request within 24 hours.
           </p>
         </div>
       </div>
 
-      {/* Submit Button */}
+      {/* ================= SUBMIT BUTTON ================= */}
       <button
         onClick={onSubmit}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md transition-all duration-300"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-md"
       >
-        Proceed to Payment - ₹{totalAmount}
+        Proceed to Payment — ₹{totalAmount}
       </button>
     </div>
   );

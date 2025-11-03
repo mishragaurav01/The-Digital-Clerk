@@ -15,9 +15,9 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
     const formData = new FormData();
     formData.append("file", file);
 // https://cndofftakencr.in/api_es/
-// http://localhost:5000/api/
+// https://cndofftakencr.in/api_es/
     try {
-      const res = await fetch(`http://localhost:5000/api/estamp/upload/${request._id}`, {
+      const res = await fetch(`https://cndofftakencr.in/api_es/estamp/upload/${request._id}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

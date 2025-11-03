@@ -24,8 +24,8 @@ const RequestDetailsModal = ({
         setError("");
         const token = localStorage.getItem("token");
 // https://cndofftakencr.in/api_es/
-// http://localhost:5000/api/
-        const res = await fetch("http://localhost:5000/api/users/lawyer", {
+// https://cndofftakencr.in/api_es/
+        const res = await fetch("https://cndofftakencr.in/api_es/users/lawyer", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

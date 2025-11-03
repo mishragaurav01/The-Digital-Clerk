@@ -30,10 +30,15 @@ const userSchema = new mongoose.Schema(
         message: (props) => `${props.value} is not a valid phone number!`,
       },
     },
-    // location: {
-    //   type: String,
-    //   trim: true,
-    // },
+    defaultBillingProfile: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'BillingProfile',
+      default: null
+    },
+    billingProfiles: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'BillingProfile'
+    }],
     profileImg:{
         type: String,
     },
