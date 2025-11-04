@@ -100,4 +100,52 @@ router.post("/billing-profile", authMiddleware, async (req, res) => {
   }
 });
 
+// ✅ Update existing billing profile
+router.put("/billing-profile", authMiddleware, async (req, res) => {
+  try {
+    const {
+      name,
+      phone,
+      email,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country,
+      gstin,
+      pan,
+    } = req.body;
+
+    const user = await User.findById(req.user._id).populate("defaultBillingProfile");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user.defaultBillingProfile)
+      return res.status(400).json({ message: "No billing profile found to update" });
+
+    const billingProfile = user.defaultBillingProfile;
+
+    Object.assign(billingProfile, {
+      name,
+      phone,
+      email,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country,
+      gstin,
+      pan,
+    });
+
+    await billingProfile.save();
+
+    res.status(200).json({ message: "Billing profile updated successfully.", data: billingProfile });
+  } catch (err) {
+    console.error("Error updating billing profile:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 export default router;

@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const BillingProfileForm = ({ onNext }) => {
+const BillingProfileForm = ({ onNext, existingData }) => {
+  const isEditing = !!existingData;
+
   const [formData, setFormData] = useState({
-    party1Name: "",
-    party1Email: "",
-    party1Phone: "",
-    state: "",
+    party1Name: existingData?.name || "",
+    party1Email: existingData?.email || "",
+    party1Phone: existingData?.phone || "",
+    state: existingData?.state || "",
   });
-  const [billingAddress, setBillingAddress] = useState("");
-  const [shippingAddress, setShippingAddress] = useState("");
+
+  const [billingAddress, setBillingAddress] = useState(existingData?.addressLine1 || "");
+  const [shippingAddress, setShippingAddress] = useState(existingData?.addressLine2 || "");
   const [sameAsBilling, setSameAsBilling] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -17,7 +20,7 @@ const BillingProfileForm = ({ onNext }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Handle submit
+  // ✅ Handle submit (POST for new, PUT for update)
   const handleSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {};
@@ -33,9 +36,11 @@ const BillingProfileForm = ({ onNext }) => {
     }
 
     const token = localStorage.getItem("token");
+    const method = isEditing ? "PUT" : "POST";
+    const url = "https://cndofftakencr.in/api_es/users/billing-profile";
 
-    const res = await fetch("https://cndofftakencr.in/api_es/users/billing-profile", {
-      method: "POST",
+    const res = await fetch(url, {
+      method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -54,8 +59,8 @@ const BillingProfileForm = ({ onNext }) => {
 
     const data = await res.json();
     if (res.ok) {
-      alert("✅ Billing address saved successfully!");
-      onNext && onNext(); // Move to next step
+      alert(isEditing ? "✅ Billing address updated successfully!" : "✅ Billing address saved successfully!");
+      onNext && onNext(); // Move to next step or close modal
     } else {
       alert(data.message || "Error saving address");
     }
@@ -64,15 +69,13 @@ const BillingProfileForm = ({ onNext }) => {
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-        Billing Information
+        {isEditing ? "Update Billing Information" : "Billing Information"}
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Full Name
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Full Name</label>
           <input
             type="text"
             name="party1Name"
@@ -85,9 +88,7 @@ const BillingProfileForm = ({ onNext }) => {
 
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Email Address
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Email Address</label>
           <input
             type="email"
             name="party1Email"
@@ -100,9 +101,7 @@ const BillingProfileForm = ({ onNext }) => {
 
         {/* Phone */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Phone Number
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Phone Number</label>
           <input
             type="text"
             name="party1Phone"
@@ -115,9 +114,7 @@ const BillingProfileForm = ({ onNext }) => {
 
         {/* State */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            State
-          </label>
+          <label className="block text-sm font-medium text-gray-700">State</label>
           <input
             type="text"
             name="state"
@@ -130,9 +127,7 @@ const BillingProfileForm = ({ onNext }) => {
 
         {/* Billing Address */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Billing Address
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Billing Address</label>
           <textarea
             value={billingAddress}
             onChange={(e) => setBillingAddress(e.target.value)}
@@ -186,12 +181,12 @@ const BillingProfileForm = ({ onNext }) => {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition duration-300"
           >
-            Save Billing Info
+            {isEditing ? "Update Billing Info" : "Save Billing Info"}
           </button>
         </div>
       </form>
     </div>
   );
-};
+}; 
 
 export default BillingProfileForm;
