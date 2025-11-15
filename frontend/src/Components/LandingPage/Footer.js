@@ -12,20 +12,24 @@ const Footer = () => {
     ],
     legal: [
       { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms of Service", href: "/terms" },
-      { name: "Refund Policy", href: "/refund" },
-      { name: "Legal Compliance", href: "/compliance" },
+      { name: "Terms & Conditions", href: "/t&c" },
+      { name: "Refund & Cancellation", href: "/refund" },
+      { name: "Shipping and Delivery", href: "/shipping" },
     ],
-    support: [
-      { name: "Help Center", href: "/help" },
+    company: [
+      { name: "Who We Are!", href: "/about" },
+      {
+        name: "About Energetic IT Solutions",
+        href: "https://energeticitsolutions.com/about-us/",
+        external: true,
+      },
       { name: "Contact Us", href: "/contact" },
-      { name: "For Lawyers", href: "/lawyers" },
       { name: "API Documentation", href: "/api" },
     ],
   };
 
   return (
-    <footer className="bg-background border-t border-border">
+    <footer className="bg-background border-t border-border text-muted-foreground">
       <div className="container mx-auto px-6 py-16">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Brand Section */}
@@ -34,19 +38,43 @@ const Footer = () => {
               <div className="p-2 bg-primary/10 rounded-lg">
                 <FileText className="w-6 h-6 text-primary" />
               </div>
-              <span className="text-xl font-bold text-foreground">eStamp Pro</span>
+              <span className="text-xl font-bold text-foreground">
+                My Digital Clerk
+              </span>
             </div>
-            <p className="text-muted-foreground leading-relaxed">
-              The simplest way to get legal stamp papers. Fast, secure, and lawyer-verified.
+
+            <p className="leading-relaxed">
+              Powered by{" "}
+              <a
+                href="https://energeticitsolutions.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground transition-colors"
+              >
+                Energetic IT Solutions
+              </a>
+              . The simplest way to get legal stamp papers — fast, secure, and
+              lawyer-verified.
             </p>
-            <div className="space-y-2 text-sm text-muted-foreground">
+
+            <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>support@estamppro.com</span>
+                <a
+                  href="mailto:support@estamppro.com"
+                  className="hover:text-foreground transition-colors"
+                >
+                  support@estamppro.com
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <span>+91 99999 88888</span>
+                <a
+                  href="tel:+919999988888"
+                  className="hover:text-foreground transition-colors"
+                >
+                  +91 99999 88888
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
@@ -63,7 +91,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </a>
@@ -80,7 +108,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </a>
@@ -89,15 +117,18 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Support Links */}
+          {/* Company Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Support</h3>
+            <h3 className="font-semibold text-foreground mb-4">Company</h3>
             <ul className="space-y-2">
-              {footerLinks.support.map((link) => (
+              {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    {...(link.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </a>
@@ -107,15 +138,21 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border pt-8 mt-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              © {currentYear} eStamp Pro. All rights reserved.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Legally compliant ⚖️ Lawyer verified ✅ Secure platform 🔒
-            </p>
-          </div>
+        {/* Bottom Bar */}
+        <div className="border-t border-border pt-8 mt-12 text-center text-sm">
+          <p>© {currentYear} My Digital Clerk. All rights reserved.</p>
+          <p className="mt-2">
+            Built by{" "}
+            <a
+              href="https://energeticitsolutions.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground transition-colors"
+            >
+              Energetic IT Solutions
+            </a>{" "}
+            — Legally compliant ⚖️ Lawyer verified ✅ Secure platform 🔒
+          </p>
         </div>
       </div>
     </footer>

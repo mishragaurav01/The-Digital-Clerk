@@ -23,7 +23,7 @@ const EstampRequests = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch("https://cndofftakencr.in/api_es/estamp/requests", {
+      const response = await fetch("http://localhost:5000/api/estamp/requests", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

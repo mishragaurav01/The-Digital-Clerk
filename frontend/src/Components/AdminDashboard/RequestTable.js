@@ -15,6 +15,8 @@ const RequestTable = ({ requests, onRowClick }) => {
       <table className="w-full text-sm text-left">
         <thead className="bg-muted text-muted-foreground uppercase text-xs">
           <tr>
+            <th className="px-6 py-3">Request I'd</th>
+            <th className="px-6 py-3">Phone</th>
             <th className="px-6 py-3">Document Type</th>
             <th className="px-6 py-3">Customer</th>
             <th className="px-6 py-3">State</th>
@@ -26,11 +28,14 @@ const RequestTable = ({ requests, onRowClick }) => {
         </thead>
         <tbody>
           {requests.map((req) => (
+            
             <tr
               key={req._id}
               onClick={() => onRowClick && onRowClick(req)} // ✅ Open modal when row clicked
               className="border-t border-border hover:bg-muted/40 transition-all cursor-pointer"
             >
+              <td className="px-6 py-3">{req.request_id}</td>
+              <td className="px-6 py-3">{req.request_id}</td>
               <td className="px-6 py-3 font-medium text-foreground">
                 {req.doc_type}
               </td>

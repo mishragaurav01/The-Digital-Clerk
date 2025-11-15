@@ -11,6 +11,13 @@ import LawyerPanel from "./Pages/Lawyer/LawyerPanel";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import LawyerLayout from './Components/lawyerLayout'
 import AdminLayout from './Components/adminLayout'
+
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
+import TermsAndConditions from "./Pages/TermsAndConditions";
+import RefundCancellation from "./Pages/RefundCancellation";
+import ShippingDelivery from "./Pages/ShippingDelivery";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
 // import CustomerHeader from './Components/customerLayout'
 
 function AppRouter() {
@@ -25,11 +32,46 @@ function AppRouter() {
       <Route
         path="/"
         element={
-          <ProtectedRoute allowedRoles={["customer"]}>
-            <LandingPage />
-          </ProtectedRoute>
+          <LandingPage />
         }
       />
+      <Route
+        path="/about"
+        element={
+          <About />
+        }
+      />
+      <Route
+        path="/contact"
+        element={
+          <Contact />
+        }
+      />
+      <Route
+        path="/t&c"
+        element={
+          <TermsAndConditions />
+        }
+      />
+      <Route
+        path="/refund"
+        element={
+          <RefundCancellation />
+        }
+      />
+      <Route
+        path="/shipping"
+        element={
+          <ShippingDelivery />
+        }
+      />
+      <Route
+        path="/privacy"
+        element={
+          <PrivacyPolicy />
+        }
+      />
+      
       <Route
         path="/orders"
         element={

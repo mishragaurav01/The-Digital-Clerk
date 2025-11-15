@@ -29,7 +29,7 @@ const Header = () => {
               <FileText className="w-6 h-6 text-primary" />
             </div>
             <span className="text-xl font-bold text-foreground">
-              The Digital Clerk
+              My Digital Clerk
             </span>
           </div>
 

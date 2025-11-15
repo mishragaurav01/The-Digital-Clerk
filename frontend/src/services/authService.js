@@ -1,7 +1,7 @@
 // src/services/authService.js
-// https://cndofftakencr.in/api_es/
-// https://cndofftakencr.in/api_es/
-const API_URL = "https://cndofftakencr.in/api_es/auth"; // change as per your backend route
+// http://localhost:5000/api/
+// http://localhost:5000/api/
+const API_URL = "http://localhost:5000/api/auth"; // change as per your backend route
 
 // Register (Sign Up)
 export const signUp = async (name, email, password, phone) => {

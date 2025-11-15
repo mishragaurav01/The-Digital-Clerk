@@ -16,7 +16,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const res = await fetch("https://cndofftakencr.in/api_es/estamp/requests", {
+        const res = await fetch("http://localhost:5000/api/estamp/requests", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
