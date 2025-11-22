@@ -42,7 +42,7 @@ const EstampForm = () => {
   const handleNext = async () => {
     if (currentStep === 4) {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/users/billing-profile", {
+      const res = await fetch("https://mydigitalclerk.com/users/billing-profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -86,7 +86,7 @@ const EstampForm = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/estamp/create", {
+      const response = await fetch("https://mydigitalclerk.com/estamp/create", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formPayload,

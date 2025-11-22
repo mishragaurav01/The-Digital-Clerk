@@ -10,7 +10,7 @@ const BillingAddressSelector = ({ onSelect }) => {
   const token = localStorage.getItem("token");
 
   const fetchAddresses = async () => {
-    const res = await fetch("http://localhost:5000/api/users/billing-profiles", {
+    const res = await fetch("https://mydigitalclerk.com/users/billing-profiles", {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -28,7 +28,7 @@ const BillingAddressSelector = ({ onSelect }) => {
 
   const handleSetDefault = async (id) => {
     const res = await fetch(
-      `http://localhost:5000/api/users/billing-profile/${id}/set-default`,
+      `https://mydigitalclerk.com/users/billing-profile/${id}/set-default`,
       {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },

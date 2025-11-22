@@ -14,10 +14,10 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
     const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("file", file);
-// http://localhost:5000/api/
-// http://localhost:5000/api/
+// https://mydigitalclerk.com/
+// https://mydigitalclerk.com/
     try {
-      const res = await fetch(`http://localhost:5000/api/estamp/upload/${request._id}`, {
+      const res = await fetch(`https://mydigitalclerk.com/estamp/upload/${request._id}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

@@ -16,9 +16,9 @@ export const updateRequestStatus = async (id, status, token, extraFields = {}) =
     };
 
     console.log("📦 Sending payload:", payload);
-// http://localhost:5000/api/
-// http://localhost:5000/api/
-    const response = await fetch(`http://localhost:5000/api/estamp/update-status/${id}`, {
+// https://mydigitalclerk.com/
+// https://mydigitalclerk.com/
+    const response = await fetch(`https://mydigitalclerk.com/estamp/update-status/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

@@ -1,7 +1,7 @@
 // src/services/authService.js
-// http://localhost:5000/api/
-// http://localhost:5000/api/
-const API_URL = "http://localhost:5000/api/auth"; // change as per your backend route
+// https://mydigitalclerk.com/
+// https://mydigitalclerk.com/
+const API_URL = "https://mydigitalclerk.com/auth"; // change as per your backend route
 
 // Register (Sign Up)
 export const signUp = async (name, email, password, phone) => {

@@ -23,9 +23,9 @@ const RequestDetailsModal = ({
         setLoadingLawyers(true);
         setError("");
         const token = localStorage.getItem("token");
-// http://localhost:5000/api/
-// http://localhost:5000/api/
-        const res = await fetch("http://localhost:5000/api/users/lawyer", {
+// https://mydigitalclerk.com/
+// https://mydigitalclerk.com/
+        const res = await fetch("https://mydigitalclerk.com/users/lawyer", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
