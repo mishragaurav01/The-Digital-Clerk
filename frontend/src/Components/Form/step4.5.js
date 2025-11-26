@@ -37,7 +37,7 @@ const BillingProfileForm = ({ onNext, existingData }) => {
 
     const token = localStorage.getItem("token");
     const method = isEditing ? "PUT" : "POST";
-    const url = "https://mydigitalclerk.com/users/billing-profile";
+    const url = "http://localhost:5000/api/users/billing-profile";
 
     const res = await fetch(url, {
       method,

@@ -13,6 +13,19 @@ const EstampForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showAddressPage, setShowAddressPage] = useState(false);
 
+  const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) return resolve(true);
+
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
+
   const [formData, setFormData] = useState({
     state: "",
     documentType: "",
@@ -42,7 +55,7 @@ const EstampForm = () => {
   const handleNext = async () => {
     if (currentStep === 4) {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://mydigitalclerk.com/users/billing-profile", {
+      const res = await fetch("http://localhost:5000/api/users/billing-profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -66,7 +79,7 @@ const EstampForm = () => {
     if (currentStep > 1) setCurrentStep((prev) => prev - 1);
   };
 
-  const handleFormSubmit = async () => {
+  const submitEstampForm = async () => {
     try {
       const formPayload = new FormData();
       formPayload.append("state", formData.state);
@@ -86,7 +99,7 @@ const EstampForm = () => {
         return;
       }
 
-      const response = await fetch("https://mydigitalclerk.com/estamp/create", {
+      const response = await fetch("http://localhost:5000/api/estamp/create", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formPayload,
@@ -105,6 +118,78 @@ const EstampForm = () => {
       alert("Error submitting request. Please try again.");
     }
   };
+
+  const handlePaymentAndSubmit = async () => {
+  try {
+    const isLoaded = await loadRazorpay();
+    if (!isLoaded) {
+      alert("Razorpay failed to load. Check your internet.");
+      return;
+    }
+
+    // 1️⃣ Create Razorpay order
+    const orderRes = await fetch("http://localhost:5000/api/payment/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: formData.stampDutyAmount + 99 + 199 }) // TOTAL AMOUNT
+    });
+
+    const orderData = await orderRes.json();
+    if (!orderData.success) {
+      alert("Failed to create payment order");
+      return;
+    }
+
+    // 2️⃣ Get Key
+    const keyRes = await fetch("http://localhost:5000/api/payment/getkey");
+    const keyData = await keyRes.json();
+
+    const options = {
+      key: keyData.key,
+      amount: orderData.order.amount,
+      currency: "INR",
+      name: "Digital Clerk",
+      description: "eStamp Payment",
+      order_id: orderData.order.id,
+
+      handler: async function (response) {
+        // 3️⃣ Verify payment
+        const verifyRes = await fetch("http://localhost:5000/api/payment/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(response),
+        });
+
+        const verifyData = await verifyRes.json();
+
+        if (!verifyData.success) {
+          alert("Payment verification failed");
+          return;
+        }
+
+        // 4️⃣ Now submit form after payment success
+        submitEstampForm();
+      },
+
+      prefill: {
+        name: formData.party1Name,
+        email: "user@example.com",
+      },
+
+      theme: {
+        color: "#0B5FFF",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+
+  } catch (error) {
+    console.error("Payment error:", error);
+    alert("Payment failed. Try again.");
+  }
+};
+
 
   if (showAddressPage) {
     return (
@@ -152,7 +237,7 @@ const EstampForm = () => {
             onPrevious={handlePrevious}
             isFirstStep={currentStep === 1}
             isLastStep={currentStep === totalSteps}
-            onSubmit={handleFormSubmit}
+            onSubmit={handlePaymentAndSubmit}
           />
         </div>
       </div>

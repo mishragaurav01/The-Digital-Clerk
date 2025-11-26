@@ -24,7 +24,7 @@ export default function Step5Review({ formData, onSubmit }) {
   const fetchBillingProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://mydigitalclerk.com/users/billing-profile", {
+      const response = await fetch("http://localhost:5000/api/users/billing-profile", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

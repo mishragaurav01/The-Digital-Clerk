@@ -14,10 +14,10 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
     const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("file", file);
-// https://mydigitalclerk.com/
-// https://mydigitalclerk.com/
+// http://localhost:5000/api/
+// http://localhost:5000/api/
     try {
-      const res = await fetch(`https://mydigitalclerk.com/estamp/upload/${request._id}`, {
+      const res = await fetch(`http://localhost:5000/api/estamp/upload/${request._id}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -113,7 +113,7 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
                 </p>
                 {file ? (
                   <a
-                    href={`http://localhost:5000/uploads/${file}`}
+                    href={`http://localhost:5000/api/uploads/${file}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"
@@ -132,7 +132,7 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
                     <p className="text-green-600 font-medium mb-2">
                       Already uploaded:{" "}
                       <a
-                        href={`http://localhost:5000/uploads/${request.uploaded_file}`}
+                        href={`http://localhost:5000/api/uploads/${request.uploaded_file}`}
                         target="_blank"
                         rel="noreferrer"
                         className="underline"

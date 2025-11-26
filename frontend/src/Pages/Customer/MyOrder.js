@@ -11,14 +11,14 @@ const MyOrders = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
-// https://mydigitalclerk.com/
-// https://mydigitalclerk.com/
+// http://localhost:5000/api/
+// http://localhost:5000/api/
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "https://mydigitalclerk.com/estamp/requests",
+          "http://localhost:5000/api/estamp/requests",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

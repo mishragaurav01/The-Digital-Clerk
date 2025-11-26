@@ -16,7 +16,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const res = await fetch("https://mydigitalclerk.com/estamp/requests", {
+        const res = await fetch("http://localhost:5000/api/estamp/requests", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

@@ -45,7 +45,7 @@ const RequestTable = ({ requests, onRowClick }) => {
               <td className="px-6 py-3 capitalize">{req.status}</td>
               <td className="px-6 py-3 text-right">
                 <a
-                  href={`http://localhost:5000/uploads/${req.id_proof}`}
+                  href={`http://localhost:5000/api/uploads/${req.id_proof}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()} // ✅ prevent modal when clicking link
@@ -57,7 +57,7 @@ const RequestTable = ({ requests, onRowClick }) => {
               </td>
               <td className="px-6 py-3 text-right">
                 <a
-                  href={`http://localhost:5000/uploads/${req.uploaded_document}`}
+                  href={`http://localhost:5000/api/uploads/${req.uploaded_document}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()} // ✅ prevent modal when clicking link

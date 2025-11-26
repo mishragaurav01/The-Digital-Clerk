@@ -87,7 +87,7 @@ const RequestDetailsModal = ({ isOpen, onClose, request }) => {
     </p>
     {request.uploaded_document ? (
       <a
-        href={`http://localhost:5000/uploads/${request.uploaded_document}`}
+        href={`http://localhost:5000/api/uploads/${request.uploaded_document}`}
         target="_blank"
         rel="noopener noreferrer"
         className="text-primary hover:underline"
@@ -106,7 +106,7 @@ const RequestDetailsModal = ({ isOpen, onClose, request }) => {
     </p>
     {request.id_proof ? (
       <a
-        href={`http://localhost:5000/uploads/${request.id_proof}`}
+        href={`http://localhost:5000/api/uploads/${request.id_proof}`}
         target="_blank"
         rel="noopener noreferrer"
         className="text-primary hover:underline"
@@ -125,7 +125,7 @@ const RequestDetailsModal = ({ isOpen, onClose, request }) => {
     </p>
     {request.uploaded_file ? (
       <a
-        href={`http://localhost:5000/uploads/${request.uploaded_file}`}
+        href={`http://localhost:5000/api/uploads/${request.uploaded_file}`}
         target="_blank"
         rel="noopener noreferrer"
         className="text-primary hover:underline"
