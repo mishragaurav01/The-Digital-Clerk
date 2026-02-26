@@ -1,5 +1,6 @@
 import React from "react";
 import { X, FileText, User, MapPin, Calendar, CheckCircle } from "lucide-react";
+import { getUploadUrl } from "../../config/api";
 
 const RequestDetailsModal = ({ isOpen, onClose, request }) => {
   if (!isOpen || !request) return null;
@@ -77,66 +78,66 @@ const RequestDetailsModal = ({ isOpen, onClose, request }) => {
           </div>
 
           {/* Uploaded documents */}
-<div className="border-t border-border pt-3 mt-3 space-y-3">
-  <p className="font-medium text-foreground text-base">Documents</p>
+          <div className="border-t border-border pt-3 mt-3 space-y-3">
+            <p className="font-medium text-foreground text-base">Documents</p>
 
-  {/* Uploaded Document */}
-  <div>
-    <p className="text-sm font-medium text-muted-foreground mb-1">
-      Uploaded Document:
-    </p>
-    {request.uploaded_document ? (
-      <a
-        href={`http://localhost:5000/api/uploads/${request.uploaded_document}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary hover:underline"
-      >
-        View Uploaded Document
-      </a>
-    ) : (
-      <p className="text-sm text-muted-foreground">No document uploaded.</p>
-    )}
-  </div>
+            {/* Uploaded Document */}
+            <div>
+              <p className="text-sm font-medium text-muted-foreground mb-1">
+                Uploaded Document:
+              </p>
+              {request.uploaded_document ? (
+                <a
+                  href={getUploadUrl(request.uploaded_document)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  View Uploaded Document
+                </a>
+              ) : (
+                <p className="text-sm text-muted-foreground">No document uploaded.</p>
+              )}
+            </div>
 
-  {/* ID Proof */}
-  <div>
-    <p className="text-sm font-medium text-muted-foreground mb-1">
-      ID Proof:
-    </p>
-    {request.id_proof ? (
-      <a
-        href={`http://localhost:5000/api/uploads/${request.id_proof}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary hover:underline"
-      >
-        View Uploaded ID Proof
-      </a>
-    ) : (
-      <p className="text-sm text-muted-foreground">No ID proof uploaded.</p>
-    )}
-  </div>
+            {/* ID Proof */}
+            <div>
+              <p className="text-sm font-medium text-muted-foreground mb-1">
+                ID Proof:
+              </p>
+              {request.id_proof ? (
+                <a
+                  href={getUploadUrl(request.id_proof)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  View Uploaded ID Proof
+                </a>
+              ) : (
+                <p className="text-sm text-muted-foreground">No ID proof uploaded.</p>
+              )}
+            </div>
 
-  {/* Stamped File */}
-  <div>
-    <p className="text-sm font-medium text-muted-foreground mb-1">
-      Final Stamped File:
-    </p>
-    {request.uploaded_file ? (
-      <a
-        href={`http://localhost:5000/api/uploads/${request.uploaded_file}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary hover:underline"
-      >
-        View Final Stamped File
-      </a>
-    ) : (
-      <p className="text-sm text-muted-foreground">No stamped file available.</p>
-    )}
-  </div>
-</div>
+            {/* Stamped File */}
+            <div>
+              <p className="text-sm font-medium text-muted-foreground mb-1">
+                Final Stamped File:
+              </p>
+              {request.uploaded_file ? (
+                <a
+                  href={getUploadUrl(request.uploaded_file)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  View Final Stamped File
+                </a>
+              ) : (
+                <p className="text-sm text-muted-foreground">No stamped file available.</p>
+              )}
+            </div>
+          </div>
 
         </div>
 

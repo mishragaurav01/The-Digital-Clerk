@@ -1,3 +1,5 @@
+import API_BASE from "../config/api";
+
 export const updateRequestStatus = async (id, status, token, extraFields = {}) => {
   try {
     // 🧠 Define how admin_review.status maps to final_status
@@ -16,9 +18,7 @@ export const updateRequestStatus = async (id, status, token, extraFields = {}) =
     };
 
     console.log("📦 Sending payload:", payload);
-// http://localhost:5000/api/
-// http://localhost:5000/api/
-    const response = await fetch(`http://localhost:5000/api/estamp/update-status/${id}`, {
+    const response = await fetch(`${API_BASE}/estamp/update-status/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

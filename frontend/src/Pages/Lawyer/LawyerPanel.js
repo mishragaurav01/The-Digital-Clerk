@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import RequestCard from "../../Components/CustomerRequests/RequestCard";
 import LawyerRequestModal from "../../Components/LawyerPanel/RequestDetailsModal";
+import API_BASE from "../../config/api";
 
 const LawyerRequests = () => {
   const [activeTab, setActiveTab] = useState("pending");
@@ -17,9 +18,7 @@ const LawyerRequests = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-// http://localhost:5000/api/
-// http://localhost:5000/api/
-      const res = await fetch("http://localhost:5000/api/estamp/requests", {
+      const res = await fetch(`${API_BASE}/estamp/requests`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -60,11 +59,10 @@ const LawyerRequests = () => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`pb-2 px-1 text-sm font-semibold border-b-2 ${
-              activeTab === tab.key
+            className={`pb-2 px-1 text-sm font-semibold border-b-2 ${activeTab === tab.key
                 ? "text-blue-600 border-blue-600"
                 : "text-gray-500 border-transparent hover:text-gray-800"
-            }`}
+              }`}
           >
             {tab.label}
           </button>

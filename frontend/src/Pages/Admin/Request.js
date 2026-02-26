@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import API_BASE from "../../config/api";
 import { LayoutGrid, Table as TableIcon } from "lucide-react";
 import RequestCard from "../../Components/CustomerRequests/RequestCard";
 import RequestTable from "../../Components/AdminDashboard/RequestTable";
@@ -23,7 +24,7 @@ const EstampRequests = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/estamp/requests", {
+      const response = await fetch(`${API_BASE}/estamp/requests`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -95,11 +96,10 @@ const EstampRequests = () => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`pb-2 px-1 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${
-              activeTab === tab.key
+            className={`pb-2 px-1 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${activeTab === tab.key
                 ? "text-blue-600 border-blue-600"
                 : "text-gray-500 border-transparent hover:text-gray-800"
-            }`}
+              }`}
           >
             {tab.label}
           </button>

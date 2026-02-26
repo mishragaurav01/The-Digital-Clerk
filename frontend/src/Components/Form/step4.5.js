@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import API_BASE from "../../config/api";
 
 const BillingProfileForm = ({ onNext, existingData }) => {
   const isEditing = !!existingData;
@@ -37,7 +38,7 @@ const BillingProfileForm = ({ onNext, existingData }) => {
 
     const token = localStorage.getItem("token");
     const method = isEditing ? "PUT" : "POST";
-    const url = "http://localhost:5000/api/users/billing-profile";
+    const url = `${API_BASE}/users/billing-profile`;
 
     const res = await fetch(url, {
       method,
@@ -187,6 +188,6 @@ const BillingProfileForm = ({ onNext, existingData }) => {
       </form>
     </div>
   );
-}; 
+};
 
 export default BillingProfileForm;

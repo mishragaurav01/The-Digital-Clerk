@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BillingProfileForm from "./BillingProfileForm";
+import API_BASE from "../../config/api";
 
 const BillingAddressSelector = ({ onSelect }) => {
   const [addresses, setAddresses] = useState([]);
@@ -8,9 +9,8 @@ const BillingAddressSelector = ({ onSelect }) => {
   const [showForm, setShowForm] = useState(false);
 
   const token = localStorage.getItem("token");
-
   const fetchAddresses = async () => {
-    const res = await fetch("http://localhost:5000/api/users/billing-profiles", {
+    const res = await fetch(`${API_BASE}/users/billing-profiles`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -28,7 +28,7 @@ const BillingAddressSelector = ({ onSelect }) => {
 
   const handleSetDefault = async (id) => {
     const res = await fetch(
-      `http://localhost:5000/api/users/billing-profile/${id}/set-default`,
+      `${API_BASE}/users/billing-profile/${id}/set-default`,
       {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
@@ -65,9 +65,8 @@ const BillingAddressSelector = ({ onSelect }) => {
             <div
               key={addr._id}
               onClick={() => handleSelect(addr)}
-              className={`border p-4 rounded-lg cursor-pointer ${
-                selected?._id === addr._id ? "border-indigo-600 bg-indigo-50" : "border-gray-300"
-              }`}
+              className={`border p-4 rounded-lg cursor-pointer ${selected?._id === addr._id ? "border-indigo-600 bg-indigo-50" : "border-gray-300"
+                }`}
             >
               <div className="flex justify-between items-center">
                 <h3 className="font-medium">{addr.label}</h3>

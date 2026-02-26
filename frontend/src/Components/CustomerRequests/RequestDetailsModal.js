@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { X, FileText, Calendar, CheckCircle, ChevronDown } from "lucide-react";
 import { updateRequestStatus } from "../../utils/updateStatus";
+import API_BASE, { getUploadUrl } from "../../config/api";
 
 const RequestDetailsModal = ({
   isOpen,
@@ -23,9 +24,7 @@ const RequestDetailsModal = ({
         setLoadingLawyers(true);
         setError("");
         const token = localStorage.getItem("token");
-// http://localhost:5000/api/
-// http://localhost:5000/api/
-        const res = await fetch("http://localhost:5000/api/users/lawyer", {
+        const res = await fetch(`${API_BASE}/users/lawyer`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -162,7 +161,7 @@ const RequestDetailsModal = ({
                 </p>
                 {file ? (
                   <a
-                    href={`http://localhost:5000/api/uploads/${file}`}
+                    href={getUploadUrl(file)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"
@@ -200,46 +199,45 @@ const RequestDetailsModal = ({
             </button>
 
             {/* Dropdown List */}
-{/* Dropdown List */}
-{dropdownOpen && (
-  <div
-    className="absolute z-50 top-full mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-[calc(100vh-200px)] overflow-auto"
-  >
-    {loadingLawyers ? (
-      <p className="p-3 text-gray-500 text-sm">Loading lawyers...</p>
-    ) : error ? (
-      <p className="p-3 text-red-500 text-sm">{error}</p>
-    ) : lawyers.length > 0 ? (
-      lawyers.map((lawyer) => (
-        <div
-          key={lawyer._id}
-          onClick={() => {
-            setSelectedLawyer(lawyer._id);
-            setDropdownOpen(false);
-          }}
-          className={`flex items-center gap-3 p-3 cursor-pointer transition
-            ${
-              selectedLawyer === lawyer._id
-                ? "bg-blue-50 border-l-4 border-blue-500"
-                : "hover:bg-gray-100"
-            }`}
-        >
-          <img
-            src={lawyer.profileImg || "/default-profile.png"}
-            alt={lawyer.name}
-            className="w-8 h-8 rounded-full object-cover"
-          />
-          <div>
-            <p className="font-medium text-gray-900 text-sm">{lawyer.name}</p>
-            <p className="text-xs text-gray-500">{lawyer.email}</p>
-          </div>
-        </div>
-      ))
-    ) : (
-      <p className="p-3 text-gray-500 text-sm">No lawyers available.</p>
-    )}
-  </div>
-)}
+            {/* Dropdown List */}
+            {dropdownOpen && (
+              <div
+                className="absolute z-50 top-full mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-[calc(100vh-200px)] overflow-auto"
+              >
+                {loadingLawyers ? (
+                  <p className="p-3 text-gray-500 text-sm">Loading lawyers...</p>
+                ) : error ? (
+                  <p className="p-3 text-red-500 text-sm">{error}</p>
+                ) : lawyers.length > 0 ? (
+                  lawyers.map((lawyer) => (
+                    <div
+                      key={lawyer._id}
+                      onClick={() => {
+                        setSelectedLawyer(lawyer._id);
+                        setDropdownOpen(false);
+                      }}
+                      className={`flex items-center gap-3 p-3 cursor-pointer transition
+            ${selectedLawyer === lawyer._id
+                          ? "bg-blue-50 border-l-4 border-blue-500"
+                          : "hover:bg-gray-100"
+                        }`}
+                    >
+                      <img
+                        src={lawyer.profileImg || "/default-profile.png"}
+                        alt={lawyer.name}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm">{lawyer.name}</p>
+                        <p className="text-xs text-gray-500">{lawyer.email}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="p-3 text-gray-500 text-sm">No lawyers available.</p>
+                )}
+              </div>
+            )}
 
           </div>
         )}
@@ -261,11 +259,10 @@ const RequestDetailsModal = ({
             <button
               disabled={!selectedLawyer}
               onClick={() => handleStatusChange("assigned")}
-              className={`px-4 py-2 text-sm font-medium rounded-md text-white transition ${
-                selectedLawyer
+              className={`px-4 py-2 text-sm font-medium rounded-md text-white transition ${selectedLawyer
                   ? "bg-yellow-600 hover:bg-yellow-700"
                   : "bg-gray-400 cursor-not-allowed"
-              }`}
+                }`}
             >
               Assign to Lawyer
             </button>

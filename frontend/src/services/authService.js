@@ -1,7 +1,7 @@
 // src/services/authService.js
-// http://localhost:5000/api/
-// http://localhost:5000/api/
-const API_URL = "http://localhost:5000/api/auth"; // change as per your backend route
+import API_BASE from "../config/api";
+
+const API_URL = `${API_BASE}/auth`;
 
 // Register (Sign Up)
 export const signUp = async (name, email, password, phone) => {
@@ -47,7 +47,7 @@ export const login = async (email, password) => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    
+
 
     console.log(data.user.role)
 

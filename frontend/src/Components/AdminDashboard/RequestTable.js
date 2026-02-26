@@ -1,5 +1,6 @@
 import React from "react";
 import { FileText } from "lucide-react";
+import { getUploadUrl } from "../../config/api";
 
 const RequestTable = ({ requests, onRowClick }) => {
   if (!requests || requests.length === 0) {
@@ -28,7 +29,7 @@ const RequestTable = ({ requests, onRowClick }) => {
         </thead>
         <tbody>
           {requests.map((req) => (
-            
+
             <tr
               key={req._id}
               onClick={() => onRowClick && onRowClick(req)} // ✅ Open modal when row clicked
@@ -45,7 +46,7 @@ const RequestTable = ({ requests, onRowClick }) => {
               <td className="px-6 py-3 capitalize">{req.status}</td>
               <td className="px-6 py-3 text-right">
                 <a
-                  href={`http://localhost:5000/api/uploads/${req.id_proof}`}
+                  href={getUploadUrl(req.id_proof)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()} // ✅ prevent modal when clicking link
@@ -57,7 +58,7 @@ const RequestTable = ({ requests, onRowClick }) => {
               </td>
               <td className="px-6 py-3 text-right">
                 <a
-                  href={`http://localhost:5000/api/uploads/${req.uploaded_document}`}
+                  href={getUploadUrl(req.uploaded_document)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()} // ✅ prevent modal when clicking link

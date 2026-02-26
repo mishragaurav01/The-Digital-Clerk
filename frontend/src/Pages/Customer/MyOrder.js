@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RequestCard from "../../Components/MyOrder/RequestCard";
 import RequestDetailsModal from "../../Components/MyOrder/RequestDetailsModal";
+import API_BASE from "../../config/api";
 
 const MyOrders = () => {
   const [activeTab, setActiveTab] = useState("pending");
@@ -11,14 +12,12 @@ const MyOrders = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
-// http://localhost:5000/api/
-// http://localhost:5000/api/
   useEffect(() => {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "http://localhost:5000/api/estamp/requests",
+          `${API_BASE}/estamp/requests`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -60,11 +59,10 @@ const MyOrders = () => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`pb-2 px-2 text-sm font-semibold transition-colors ${
-              activeTab === tab.key
+            className={`pb-2 px-2 text-sm font-semibold transition-colors ${activeTab === tab.key
                 ? "text-primary border-b-2 border-primary"
                 : "text-muted-foreground hover:text-foreground"
-            }`}
+              }`}
           >
             {tab.label}
           </button>

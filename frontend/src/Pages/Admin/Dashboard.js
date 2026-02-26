@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import API_BASE from "../../config/api";
 import { BarChart3, CheckCircle, Clock, FileText, Users, XCircle } from "lucide-react";
 import AdminStatsCard from "../../Components/AdminDashboard/AdminStatsCard";
 import RequestTable from "../../Components/AdminDashboard/RequestTable";
@@ -16,7 +17,7 @@ const AdminDashboard = () => {
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/estamp/requests", {
+        const res = await fetch(`${API_BASE}/estamp/requests`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -83,11 +84,10 @@ const AdminDashboard = () => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-5 py-2 rounded-full flex items-center gap-2 font-medium transition-all ${
-              activeTab === tab.key
+            className={`px-5 py-2 rounded-full flex items-center gap-2 font-medium transition-all ${activeTab === tab.key
                 ? "bg-primary text-white shadow-md"
                 : "bg-card text-muted-foreground hover:bg-muted"
-            }`}
+              }`}
           >
             {tab.icon}
             {tab.label}

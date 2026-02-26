@@ -13,7 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://mydigitalclerk.com/'],
+  origin: ['http://10.116.5.233:3000', 'http://10.116.5.233:5000/', 'http://10.116.5.233:5000/', 'http://localhost:3000', 'http://localhost:5000'],
   optionsSuccessStatus: 200
 };
 

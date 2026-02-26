@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Shield, MapPin, IndianRupee, Receipt, Edit3 } from "lucide-react";
 import BillingProfileForm from "../Form/step4.5"; // ✅ import the form
+import API_BASE from "../../config/api";
 
 export default function Step5Review({ formData, onSubmit }) {
   const [billingProfile, setBillingProfile] = useState(null);
@@ -24,7 +25,7 @@ export default function Step5Review({ formData, onSubmit }) {
   const fetchBillingProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/users/billing-profile", {
+      const response = await fetch(`${API_BASE}/users/billing-profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

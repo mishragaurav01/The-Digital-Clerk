@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, FileText, Upload, Calendar, CheckCircle } from "lucide-react";
+import API_BASE, { getUploadUrl } from "../../config/api";
 
 const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
   const [file, setFile] = useState(null);
@@ -14,10 +15,8 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
     const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("file", file);
-// http://localhost:5000/api/
-// http://localhost:5000/api/
     try {
-      const res = await fetch(`http://localhost:5000/api/estamp/upload/${request._id}`, {
+      const res = await fetch(`${API_BASE}/estamp/upload/${request._id}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -105,7 +104,7 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
             {[
               ["Uploaded Document", request.uploaded_document],
               ["ID Proof", request.id_proof],
-            //   ["Final Stamped File", request.uploaded_file],
+              //   ["Final Stamped File", request.uploaded_file],
             ].map(([label, file], idx) => (
               <div key={idx}>
                 <p className="text-sm font-medium text-gray-500 mb-1">
@@ -113,7 +112,7 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
                 </p>
                 {file ? (
                   <a
-                    href={`http://localhost:5000/api/uploads/${file}`}
+                    href={getUploadUrl(file)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"
@@ -128,41 +127,40 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
               </div>
             ))}
 
-                    {request.uploaded_file ? (
-                    <p className="text-green-600 font-medium mb-2">
-                      Already uploaded:{" "}
-                      <a
-                        href={`http://localhost:5000/api/uploads/${request.uploaded_file}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="underline"
-                      >
-                        View File
-                      </a>
-                    </p>
-        ) : (
-          <>
-            <input
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-              className="border p-2 rounded w-full mb-3"
-            />
-            <button
-              onClick={handleFileUpload}
-              disabled={uploading}
-              className={`w-full py-2 rounded-md text-white ${
-                uploading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              <Upload className="inline-block mr-2 w-4 h-4" />
-              {uploading ? "Uploading..." : "Upload & Submit for Review"}
-            </button>
-          </>
-        )}
+            {request.uploaded_file ? (
+              <p className="text-green-600 font-medium mb-2">
+                Already uploaded:{" "}
+                <a
+                  href={getUploadUrl(request.uploaded_file)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  View File
+                </a>
+              </p>
+            ) : (
+              <>
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  className="border p-2 rounded w-full mb-3"
+                />
+                <button
+                  onClick={handleFileUpload}
+                  disabled={uploading}
+                  className={`w-full py-2 rounded-md text-white ${uploading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+                    }`}
+                >
+                  <Upload className="inline-block mr-2 w-4 h-4" />
+                  {uploading ? "Uploading..." : "Upload & Submit for Review"}
+                </button>
+              </>
+            )}
           </div>
         </div>
 
-        
+
 
         {/* ✅ Lawyer Assignment Dropdown */}
         {/* {request.admin_review.status === "approved" && (
@@ -228,7 +226,7 @@ const LawyerRequestModal = ({ isOpen, onClose, request, refreshRequests }) => {
             </button>
           )} */}
 
-          
+
 
           <button
             onClick={onClose}
