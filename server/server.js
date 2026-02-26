@@ -14,6 +14,8 @@ const PORT = process.env.PORT || 5000;
 
 const corsOptions = {
   origin: [
+    "http://mydigitalclerk.com",
+    "https://mydigitalclerk.com",
     "http://82.112.236.35",
     "http://82.112.236.35:3000",
     "http://82.112.236.35:5001",
