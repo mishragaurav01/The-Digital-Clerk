@@ -9,10 +9,17 @@
 //   REACT_APP_API_URL=https://your-production-domain.com/api
 // ================================================
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const isProd = process.env.NODE_ENV === "production";
+
+// Use relative paths in production to route through a reverse proxy (like Nginx).
+// This prevents exposing backend ports and IPs directly during frontend requests.
+const API_BASE =
+  process.env.REACT_APP_API_URL ||
+  (isProd ? "/api" : "http://localhost:5001/api");
 
 // Base URL for serving uploaded files (static files)
-const UPLOADS_BASE = process.env.REACT_APP_UPLOADS_URL || "http://localhost:5000";
+const UPLOADS_BASE =
+  process.env.REACT_APP_UPLOADS_URL || (isProd ? "" : "http://localhost:5001");
 
 /**
  * Returns the full URL for an uploaded file.
